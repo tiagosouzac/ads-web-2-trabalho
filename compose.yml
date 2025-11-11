@@ -1,0 +1,15 @@
+services:
+  database:
+    container_name: plataforma_eventos_db
+    image: postgres:18
+    environment:
+      POSTGRES_USER: user
+      POSTGRES_PASSWORD: password
+      POSTGRES_DB: plataforma_eventos
+    ports:
+      - "5432:5432"
+    volumes:
+      - db_data:/var/lib/postgresql/18/docker
+
+volumes:
+  db_data:
