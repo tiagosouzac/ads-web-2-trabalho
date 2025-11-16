@@ -1,0 +1,71 @@
+package com.web.eventos.entities;
+
+import jakarta.persistence.*;
+import jakarta.validation.constraints.Email;
+import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.NotNull;
+import jakarta.validation.constraints.Pattern;
+import jakarta.validation.constraints.Size;
+import lombok.AllArgsConstructor;
+import lombok.Builder;
+import lombok.Data;
+import lombok.NoArgsConstructor;
+import org.hibernate.annotations.CreationTimestamp;
+import org.hibernate.annotations.UpdateTimestamp;
+
+import java.time.LocalDateTime;
+
+@Entity
+@Table(name = "organizacao")
+@Data
+@NoArgsConstructor
+@AllArgsConstructor
+@Builder
+public class Organizacao {
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Integer id;
+
+    @NotBlank(message = "O nome é obrigatório")
+    @Size(max = 255, message = "O nome deve ter no máximo 255 caracteres")
+    @Column(nullable = false)
+    private String nome;
+
+    @NotNull(message = "O tipo de organização é obrigatório")
+    @Enumerated(EnumType.STRING)
+    @Column(nullable = false)
+    private TipoOrganizacao tipo;
+
+    @NotBlank(message = "O CNPJ é obrigatório")
+    @Pattern(regexp = "^\\d{2}\\.\\d{3}\\.\\d{3}/\\d{4}-\\d{2}$", message = "CNPJ deve estar no formato XX.XXX.XXX/XXXX-XX")
+    @Column(nullable = false, unique = true)
+    private String cnpj;
+
+    @NotBlank(message = "O email é obrigatório")
+    @Email(message = "Email deve ser válido")
+    @Size(max = 255, message = "O email deve ter no máximo 255 caracteres")
+    @Column(nullable = false)
+    private String email;
+
+    @NotBlank(message = "O telefone é obrigatório")
+    @Pattern(regexp = "^\\(\\d{2}\\) \\d{4,5}-\\d{4}$", message = "Telefone deve estar no formato (XX) XXXXX-XXXX ou (XX) XXXX-XXXX")
+    @Column(nullable = false)
+    private String telefone;
+
+    @NotBlank(message = "O endereço é obrigatório")
+    @Size(max = 100, message = "O endereço deve ter no máximo 100 caracteres")
+    @Column(nullable = false)
+    private String endereco;
+
+    @OneToOne
+    @JoinColumn(name = "logo_id")
+    private Midia logo;
+
+    @CreationTimestamp
+    @Column(name = "criado_em", nullable = false, updatable = false)
+    private LocalDateTime criadoEm;
+
+    @UpdateTimestamp
+    @Column(name = "atualizado_em", nullable = false)
+    private LocalDateTime atualizadoEm;
+}
