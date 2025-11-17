@@ -41,12 +41,9 @@ public class Usuario {
     @Size(min = 8, message = "A senha deve ter no mínimo 8 caracteres")
     private String senha;
 
-    @Pattern(regexp = "^\\(?\\d{2}\\)?\\s?\\d{4,5}-?\\d{4}$", message = "Telefone deve estar no formato (00) 00000-0000")
-    @Column(length = 20)
-    private String telefone;
-
+    @NotBlank(message = "O CPF é obrigatório")
     @Pattern(regexp = "^\\d{3}\\.?\\d{3}\\.?\\d{3}-?\\d{2}$", message = "CPF deve estar no formato 000.000.000-00")
-    @Column(unique = true, length = 14)
+    @Column(nullable = false, unique = true, length = 14)
     private String cpf;
 
     @OneToOne

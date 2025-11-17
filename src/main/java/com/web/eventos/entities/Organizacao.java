@@ -44,7 +44,7 @@ public class Organizacao {
     @NotBlank(message = "O email é obrigatório")
     @Email(message = "Email deve ser válido")
     @Size(max = 255, message = "O email deve ter no máximo 255 caracteres")
-    @Column(nullable = false)
+    @Column(nullable = false, unique = true, length = 255)
     private String email;
 
     @NotBlank(message = "O telefone é obrigatório")
@@ -60,6 +60,11 @@ public class Organizacao {
     @OneToOne
     @JoinColumn(name = "logo_id")
     private Midia logo;
+
+    @Column(length = 255, nullable = false)
+    @NotBlank(message = "A senha é obrigatória")
+    @Size(min = 8, message = "A senha deve ter no mínimo 8 caracteres")
+    private String senha;
 
     @CreationTimestamp
     @Column(name = "criado_em", nullable = false, updatable = false)
