@@ -1,0 +1,32 @@
+<header th:fragment="header" class="border-b py-2">
+  <nav class="container flex justify-between items-center gap-4">
+    <a th:href="@{/}" class="font-semibold">Partiu!</a>
+
+    <div class="flex items-center gap-1.5" sec:authorize="!isAuthenticated()">
+      <a
+        th:href="@{/usuarios/cadastrar}"
+        class="h-9 border rounded-md px-4 py-1.5 text-sm font-medium transition-colors hover:bg-neutral-100 flex items-center justify-center"
+      >
+        Cadastrar
+      </a>
+
+      <a
+        th:href="@{/entrar}"
+        class="h-9 bg-blue-500 px-4 py-1.5 rounded-md text-neutral-100 text-sm font-medium transition-colors hover:bg-blue-600 flex items-center justify-center"
+      >
+        Entrar
+      </a>
+    </div>
+
+    <div class="flex items-center gap-1.5" sec:authorize="isAuthenticated()">
+      <form th:action="@{/logout}">
+        <button
+          type="submit"
+          class="h-9 bg-red-500 px-4 py-1.5 rounded-md text-neutral-100 text-sm font-medium transition-colors hover:bg-red-600 flex items-center justify-center"
+        >
+          Sair
+        </button>
+      </form>
+    </div>
+  </nav>
+</header>

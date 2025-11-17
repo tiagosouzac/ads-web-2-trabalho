@@ -1,0 +1,164 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+  <th:block
+    th:replace="fragments/head :: head('Cadastrar conta | Partiu!')"
+  ></th:block>
+
+  <body>
+    <th:block th:replace="fragments/header :: header"></th:block>
+
+    <main class="max-w-96 mx-auto space-y-6 py-12">
+      <div
+        th:if="${erro}"
+        class="bg-red-50 border border-red-200 text-red-700 px-4 py-3 rounded-md text-sm mb-10"
+        role="alert"
+      >
+        <p th:text="${erro}"></p>
+      </div>
+
+      <div
+        th:if="${mensagem}"
+        class="bg-green-50 border border-green-200 text-green-700 px-4 py-3 rounded-md text-sm mb-10"
+        role="alert"
+      >
+        <p th:text="${mensagem}"></p>
+      </div>
+
+      <hgroup class="space-y-3">
+        <h1 class="text-center font-semibold text-2xl">Cadastre-se</h1>
+
+        <p class="text-neutral-500 text-center text-balance">
+          Crie sua conta e encontre os melhores eventos na sua cidade e região.
+        </p>
+      </hgroup>
+
+      <form
+        class="flex flex-col gap-4"
+        th:action="@{/usuarios/salvar}"
+        method="POST"
+        th:object="${usuario}"
+      >
+        <div class="flex flex-col gap-1">
+          <label for="nome">
+            Nome
+            <span class="text-red-500">*</span>
+          </label>
+
+          <input
+            class="border px-3 py-1.5 rounded-md"
+            type="text"
+            id="nome"
+            name="nome"
+            placeholder="Digite seu nome"
+            required
+            th:value="*{nome}"
+          />
+
+          <p
+            th:if="${#fields.hasErrors('nome')}"
+            th:errors="*{nome}"
+            class="text-red-500 text-sm"
+          ></p>
+        </div>
+
+        <div class="flex flex-col gap-1">
+          <label for="cpf">
+            CPF
+            <span class="text-red-500">*</span>
+          </label>
+
+          <input
+            class="border px-3 py-1.5 rounded-md"
+            type="text"
+            id="cpf"
+            name="cpf"
+            placeholder="Digite seu CPF"
+            required
+            th:value="*{cpf}"
+          />
+
+          <p
+            th:if="${#fields.hasErrors('cpf')}"
+            th:errors="*{cpf}"
+            class="text-red-500 text-sm"
+          ></p>
+        </div>
+
+        <div class="flex flex-col gap-1">
+          <label for="email">
+            E-mail
+            <span class="text-red-500">*</span>
+          </label>
+
+          <input
+            class="border px-3 py-1.5 rounded-md"
+            type="email"
+            id="email"
+            name="email"
+            placeholder="Digite seu e-mail"
+            required
+            th:value="*{email}"
+          />
+
+          <p
+            th:if="${#fields.hasErrors('email')}"
+            th:errors="*{email}"
+            class="text-red-500 text-sm"
+          ></p>
+        </div>
+
+        <div class="flex flex-col gap-1">
+          <label for="senha">
+            Senha
+            <span class="text-red-500">*</span>
+          </label>
+
+          <input
+            class="border px-3 py-1.5 rounded-md"
+            type="password"
+            id="senha"
+            name="senha"
+            placeholder="Digite sua senha"
+            required
+          />
+
+          <p
+            th:if="${#fields.hasErrors('senha')}"
+            th:errors="*{senha}"
+            class="text-red-500 text-sm"
+          ></p>
+        </div>
+
+        <button
+          type="submit"
+          class="h-10 bg-blue-500 px-4 py-1.5 rounded-md text-neutral-100 font-medium transition-colors hover:bg-blue-600 flex items-center justify-center"
+        >
+          Cadastrar
+        </button>
+      </form>
+
+      <p class="text-sm text-center">
+        Já se cadastrou?
+        <a
+          th:href="@{/entrar}"
+          class="text-blue-500 underline hover:text-blue-600"
+        >
+          Acesse sua conta
+        </a>
+      </p>
+
+      <div class="flex items-center gap-4">
+        <div class="flex-1 border-t"></div>
+        <span class="text-sm">ou</span>
+        <div class="flex-1 border-t"></div>
+      </div>
+
+      <a
+        th:href="@{/organizacoes/cadastrar}"
+        class="w-full h-10 border px-4 py-1.5 rounded-md font-medium transition-colors hover:bg-neutral-100 flex items-center justify-center"
+      >
+        Cadastre sua organização
+      </a>
+    </main>
+  </body>
+</html>

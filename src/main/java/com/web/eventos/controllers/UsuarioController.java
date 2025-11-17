@@ -1,0 +1,58 @@
+package com.web.eventos.controllers;
+
+import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
+import org.springframework.validation.BindingResult;
+import org.springframework.web.bind.annotation.RequestMapping;
+
+import com.web.eventos.entities.Usuario;
+import com.web.eventos.services.UsuarioService;
+
+import jakarta.validation.Valid;
+
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.ModelAttribute;
+import org.springframework.web.bind.annotation.PostMapping;
+
+@Controller
+@RequestMapping("/usuarios")
+public class UsuarioController {
+    private final UsuarioService usuarioService;
+
+    public UsuarioController(UsuarioService usuarioService) {
+        this.usuarioService = usuarioService;
+    }
+
+    @GetMapping("/cadastrar")
+    public String cadastrar(Model model) {
+        model.addAttribute("usuario", new Usuario());
+        return "usuarios/cadastrar";
+    }
+
+    @PostMapping("/salvar")
+    public String salvar(@ModelAttribute @Valid Usuario usuario, BindingResult result, Model model) {
+        if (result.hasErrors()) {
+            return "usuarios/cadastrar";
+        }
+
+        try {
+            usuarioService.salvar(usuario);
+            model.addAttribute("mensagem",
+                    "Cadastro realizado com sucesso! Por favor, faça o login para acessar sua conta.");
+            model.addAttribute("email", usuario.getEmail());
+            return "entrar";
+        } catch (IllegalArgumentException e) {
+            if (e.getMessage().contains("E-mail")) {
+                result.rejectValue("email", "error.usuario", e.getMessage());
+            } else if (e.getMessage().contains("CPF")) {
+                result.rejectValue("cpf", "error.usuario", e.getMessage());
+            } else {
+                model.addAttribute("erro", e.getMessage());
+            }
+            return "usuarios/cadastrar";
+        } catch (Exception e) {
+            model.addAttribute("erro", "Ocorreu um erro ao processar o cadastro. Tente novamente.");
+            return "usuarios/cadastrar";
+        }
+    }
+}

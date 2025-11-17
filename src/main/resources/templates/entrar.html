@@ -1,0 +1,99 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+  <th:block
+    th:replace="fragments/head :: head('Acessar conta | Partiu!')"
+  ></th:block>
+
+  <body>
+    <th:block th:replace="fragments/header :: header"></th:block>
+
+    <main class="max-w-96 mx-auto space-y-6 py-12">
+      <div
+        th:if="${param.error}"
+        class="bg-red-50 border border-red-500 text-red-700 px-4 py-3 rounded-md text-sm mb-10"
+        role="alert"
+      >
+        <p>E-mail ou senha incorretos. Tente novamente.</p>
+      </div>
+
+      <div
+        th:if="${mensagem}"
+        class="bg-green-50 border border-green-500 text-green-700 px-4 py-3 rounded-md text-sm mb-10"
+        role="alert"
+      >
+        <p th:text="${mensagem}"></p>
+      </div>
+
+      <div
+        th:if="${param.logout}"
+        class="bg-blue-50 border border-blue-500 text-blue-700 px-4 py-3 rounded-md text-sm mb-10"
+        role="alert"
+      >
+        <p>Você saiu da sua conta com sucesso.</p>
+      </div>
+
+      <hgroup class="space-y-3">
+        <h1 class="text-center font-semibold text-2xl">Acesse sua conta</h1>
+
+        <p class="text-neutral-500 text-center text-balance">
+          Acesse sua conta para descobrir eventos incríveis ou publicar os seus!
+        </p>
+      </hgroup>
+
+      <form class="flex flex-col gap-4" th:action="@{/entrar}" method="POST">
+        <div class="flex flex-col gap-1">
+          <label for="email">
+            E-mail
+            <span class="text-red-500">*</span>
+          </label>
+
+          <!-- Note: name 'username' is used by Spring Security for login -->
+          <input
+            class="border px-3 py-1.5 rounded-md"
+            type="email"
+            id="email"
+            name="username"
+            placeholder="Digite seu e-mail"
+            required
+            th:value="${email}"
+          />
+        </div>
+
+        <div class="flex flex-col gap-1">
+          <label for="senha">
+            Senha
+            <span class="text-red-500">*</span>
+          </label>
+
+          <!-- Note: name 'password' is used by Spring Security for login -->
+          <input
+            class="border px-3 py-1.5 rounded-md"
+            type="password"
+            id="senha"
+            name="password"
+            placeholder="Digite sua senha"
+            required
+            th:autofocus="*{email != null and !#strings.isEmpty(email)}"
+          />
+        </div>
+
+        <button
+          type="submit"
+          class="h-10 bg-blue-500 px-4 py-1.5 rounded-md text-neutral-100 font-medium transition-colors hover:bg-blue-600 flex items-center justify-center"
+        >
+          Entrar
+        </button>
+      </form>
+
+      <p class="text-sm text-center">
+        Ainda não tem uma conta?
+        <a
+          th:href="@{/usuarios/cadastrar}"
+          class="text-blue-500 underline hover:text-blue-600"
+        >
+          Cadastre-se
+        </a>
+      </p>
+    </main>
+  </body>
+</html>
