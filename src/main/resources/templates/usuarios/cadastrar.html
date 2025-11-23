@@ -37,6 +37,7 @@
         th:action="@{/usuarios/salvar}"
         method="POST"
         th:object="${usuario}"
+        enctype="multipart/form-data"
       >
         <div class="flex flex-col gap-1">
           <label for="nome">
@@ -127,6 +128,22 @@
             th:errors="*{senha}"
             class="text-red-500 text-sm"
           ></p>
+        </div>
+
+        <div class="flex flex-col gap-1">
+          <label for="avatar"> Avatar </label>
+
+          <input
+            class="border px-3 py-1.5 rounded-md"
+            type="file"
+            id="avatar"
+            name="avatar"
+            accept="image/jpeg,image/jpg,image/png,image/gif,image/webp"
+          />
+
+          <p class="text-xs text-neutral-500">
+            Formatos aceitos: JPEG, PNG, GIF, WebP (máx. 10MB)
+          </p>
         </div>
 
         <button

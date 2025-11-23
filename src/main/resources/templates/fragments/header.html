@@ -18,15 +18,90 @@
       </a>
     </div>
 
-    <div class="flex items-center gap-1.5" sec:authorize="isAuthenticated()">
-      <form th:action="@{/logout}">
-        <button
-          type="submit"
-          class="h-9 bg-red-500 px-4 py-1.5 rounded-md text-neutral-100 text-sm font-medium transition-colors hover:bg-red-600 flex items-center justify-center"
-        >
-          Sair
-        </button>
-      </form>
+    <div
+      class="flex items-center gap-1.5 relative group/user-menu"
+      sec:authorize="isAuthenticated()"
+    >
+      <div class="flex items-center gap-2">
+        <img
+          th:if="${#authentication.principal.avatar != null}"
+          th:src="${#authentication.principal.avatar.url}"
+          th:alt="${#authentication.principal.nome}"
+          class="w-8 h-8 rounded-full object-cover border"
+        />
+
+        <div
+          th:if="${#authentication.principal.avatar == null}"
+          class="w-8 h-8 rounded-full bg-blue-500 text-white flex items-center justify-center text-sm font-medium"
+          th:text="${#strings.substring(#authentication.principal.nome, 0, 1).toUpperCase()}"
+        ></div>
+      </div>
+
+      <div
+        class="absolute top-full right-0 pt-1 group-hover/user-menu:block hidden"
+      >
+        <div class="bg-white border rounded-md shadow-lg w-48 flex flex-col">
+          <div class="px-4 py-2 text-sm border-b">
+            <div
+              class="truncate"
+              th:text="${#authentication.principal.nome}"
+            ></div>
+            <div
+              class="text-xs text-neutral-500 truncate"
+              th:text="${#authentication.principal.email}"
+            ></div>
+          </div>
+
+          <div class="flex flex-col py-1">
+            <a
+              th:href="@{/perfil}"
+              class="px-4 py-2 text-sm hover:bg-neutral-100 flex items-center gap-2"
+            >
+              <svg
+                xmlns="http://www.w3.org/2000/svg"
+                width="24"
+                height="24"
+                viewBox="0 0 24 24"
+                fill="none"
+                stroke="currentColor"
+                stroke-width="2"
+                stroke-linecap="round"
+                stroke-linejoin="round"
+                class="lucide lucide-user-icon lucide-user size-4"
+              >
+                <path d="M19 21v-2a4 4 0 0 0-4-4H9a4 4 0 0 0-4 4v2" />
+                <circle cx="12" cy="7" r="4" />
+              </svg>
+              Meu Perfil
+            </a>
+
+            <form th:action="@{/logout}" method="post">
+              <button
+                type="submit"
+                class="w-full text-left px-4 py-2 text-sm hover:bg-red-100 text-red-700 flex items-center gap-2 cursor-pointer"
+              >
+                <svg
+                  xmlns="http://www.w3.org/2000/svg"
+                  width="24"
+                  height="24"
+                  viewBox="0 0 24 24"
+                  fill="none"
+                  stroke="currentColor"
+                  stroke-width="2"
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                  class="lucide lucide-log-out-icon lucide-log-out size-4"
+                >
+                  <path d="m16 17 5-5-5-5" />
+                  <path d="M21 12H9" />
+                  <path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4" />
+                </svg>
+                Sair
+              </button>
+            </form>
+          </div>
+        </div>
+      </div>
     </div>
   </nav>
 </header>

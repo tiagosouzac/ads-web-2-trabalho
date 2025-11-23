@@ -3,7 +3,11 @@ package com.web.eventos.controllers;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
+import org.springframework.web.bind.WebDataBinder;
+import org.springframework.web.bind.annotation.InitBinder;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.multipart.MultipartFile;
 
 import com.web.eventos.entities.Usuario;
 import com.web.eventos.services.UsuarioService;
@@ -23,6 +27,11 @@ public class UsuarioController {
         this.usuarioService = usuarioService;
     }
 
+    @InitBinder
+    public void initBinder(WebDataBinder binder) {
+        binder.setDisallowedFields("avatar");
+    }
+
     @GetMapping("/cadastrar")
     public String cadastrar(Model model) {
         model.addAttribute("usuario", new Usuario());
@@ -30,13 +39,14 @@ public class UsuarioController {
     }
 
     @PostMapping("/salvar")
-    public String salvar(@ModelAttribute @Valid Usuario usuario, BindingResult result, Model model) {
+    public String salvar(@ModelAttribute @Valid Usuario usuario, BindingResult result,
+            @RequestParam(value = "avatar", required = false) MultipartFile avatar, Model model) {
         if (result.hasErrors()) {
             return "usuarios/cadastrar";
         }
 
         try {
-            usuarioService.salvar(usuario);
+            usuarioService.salvar(usuario, avatar);
             model.addAttribute("mensagem",
                     "Cadastro realizado com sucesso! Por favor, faça o login para acessar sua conta.");
             model.addAttribute("email", usuario.getEmail());
@@ -50,8 +60,12 @@ public class UsuarioController {
                 model.addAttribute("erro", e.getMessage());
             }
             return "usuarios/cadastrar";
+        } catch (java.io.IOException e) {
+            model.addAttribute("erro", "Erro ao fazer upload do avatar: " + e.getMessage());
+            return "usuarios/cadastrar";
         } catch (Exception e) {
             model.addAttribute("erro", "Ocorreu um erro ao processar o cadastro. Tente novamente.");
+            e.printStackTrace();
             return "usuarios/cadastrar";
         }
     }
