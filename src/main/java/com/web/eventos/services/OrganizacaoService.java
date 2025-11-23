@@ -26,6 +26,10 @@ public class OrganizacaoService {
         this.midiaService = midiaService;
     }
 
+    public Organizacao findById(Integer id) {
+        return organizacaoRepository.findById(id).orElse(null);
+    }
+
     public Organizacao findByEmail(String email) {
         return organizacaoRepository.findByEmail(email).orElse(null);
     }
@@ -56,5 +60,42 @@ public class OrganizacaoService {
         String senhaCriptografada = passwordEncoder.encode(senha);
         organizacao.setSenha(senhaCriptografada);
         return organizacaoRepository.save(organizacao);
+    }
+
+    public Organizacao atualizar(Organizacao organizacao, MultipartFile logo) throws IOException {
+        Organizacao existing = organizacaoRepository.findById(organizacao.getId())
+                .orElseThrow(() -> new IllegalArgumentException("Organização não encontrada"));
+
+        // Check if email changed and if new email is taken by another organization or
+        // user
+        if (!existing.getEmail().equals(organizacao.getEmail())
+                && (organizacaoRepository.existsByEmail(organizacao.getEmail())
+                        || usuarioService.existsByEmail(organizacao.getEmail()))) {
+            throw new IllegalArgumentException("E-mail já cadastrado no sistema");
+        }
+
+        // Update fields
+        existing.setNome(organizacao.getNome());
+        existing.setTipo(organizacao.getTipo());
+        existing.setCnpj(organizacao.getCnpj());
+        existing.setEmail(organizacao.getEmail());
+        existing.setTelefone(organizacao.getTelefone());
+        existing.setEndereco(organizacao.getEndereco());
+
+        if (organizacao.getSenha() != null && !organizacao.getSenha().isEmpty()) {
+            String senhaCriptografada = passwordEncoder.encode(organizacao.getSenha());
+            existing.setSenha(senhaCriptografada);
+        }
+
+        if (logo != null && !logo.isEmpty()) {
+            Midia logoMidia = midiaService.uploadArquivo(logo);
+            existing.setLogo(logoMidia);
+        }
+
+        return organizacaoRepository.save(existing);
+    }
+
+    public void excluir(Integer id) {
+        organizacaoRepository.deleteById(id);
     }
 }

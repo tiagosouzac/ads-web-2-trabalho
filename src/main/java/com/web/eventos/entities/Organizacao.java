@@ -57,7 +57,7 @@ public class Organizacao {
     @Column(nullable = false)
     private String endereco;
 
-    @OneToOne
+    @OneToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "logo_id")
     private Midia logo;
 

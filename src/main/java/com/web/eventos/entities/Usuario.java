@@ -46,7 +46,7 @@ public class Usuario {
     @Column(nullable = false, unique = true, length = 14)
     private String cpf;
 
-    @OneToOne
+    @OneToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "avatar_id")
     private Midia avatar;
 

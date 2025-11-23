@@ -1,0 +1,245 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+  <th:block
+    th:replace="fragments/head :: head('Editar perfil da organização | Partiu!')"
+  ></th:block>
+
+  <body>
+    <th:block th:replace="fragments/header :: header"></th:block>
+
+    <main class="max-w-96 mx-auto space-y-6 py-12">
+      <div
+        th:if="${erro}"
+        class="bg-red-50 border border-red-200 text-red-700 px-4 py-3 rounded-md text-sm mb-10"
+        role="alert"
+      >
+        <p th:text="${erro}"></p>
+      </div>
+
+      <div
+        th:if="${mensagem}"
+        class="bg-green-50 border border-green-200 text-green-700 px-4 py-3 rounded-md text-sm mb-10"
+        role="alert"
+      >
+        <p th:text="${mensagem}"></p>
+      </div>
+
+      <hgroup class="space-y-3">
+        <h1 class="text-center font-semibold text-2xl">
+          Editar perfil da organização
+        </h1>
+
+        <p class="text-neutral-500 text-center text-balance">
+          Atualize as informações da sua organização.
+        </p>
+      </hgroup>
+
+      <form
+        class="flex flex-col gap-4"
+        th:action="@{/organizacoes/perfil/editar}"
+        method="POST"
+        th:object="${organizacao}"
+        enctype="multipart/form-data"
+      >
+        <div class="flex flex-col gap-1">
+          <label for="nome">
+            Nome
+            <span class="text-red-500">*</span>
+          </label>
+
+          <input
+            class="border px-3 py-1.5 rounded-md"
+            type="text"
+            id="nome"
+            name="nome"
+            placeholder="Digite o nome da organização"
+            required
+            th:value="*{nome}"
+          />
+
+          <p
+            th:if="${#fields.hasErrors('nome')}"
+            th:errors="*{nome}"
+            class="text-red-500 text-sm"
+          ></p>
+        </div>
+
+        <div class="flex flex-col gap-1">
+          <label for="tipo"> Tipo de Organização </label>
+
+          <input
+            class="border px-3 py-1.5 rounded-md bg-gray-100 cursor-not-allowed"
+            type="text"
+            id="tipo"
+            name="tipo"
+            readonly
+            th:value="*{tipo}"
+          />
+
+          <p
+            th:if="${#fields.hasErrors('tipo')}"
+            th:errors="*{tipo}"
+            class="text-red-500 text-sm"
+          ></p>
+        </div>
+
+        <div class="flex flex-col gap-1">
+          <label for="cnpj"> CNPJ </label>
+
+          <input
+            class="border px-3 py-1.5 rounded-md bg-gray-100 cursor-not-allowed"
+            type="text"
+            id="cnpj"
+            name="cnpj"
+            placeholder="Digite o CNPJ da organização"
+            readonly
+            th:value="*{cnpj}"
+          />
+
+          <p
+            th:if="${#fields.hasErrors('cnpj')}"
+            th:errors="*{cnpj}"
+            class="text-red-500 text-sm"
+          ></p>
+        </div>
+
+        <div class="flex flex-col gap-1">
+          <label for="email">
+            E-mail
+            <span class="text-red-500">*</span>
+          </label>
+
+          <input
+            class="border px-3 py-1.5 rounded-md"
+            type="email"
+            id="email"
+            name="email"
+            placeholder="Digite o e-mail da organização"
+            required
+            th:value="*{email}"
+          />
+
+          <p
+            th:if="${#fields.hasErrors('email')}"
+            th:errors="*{email}"
+            class="text-red-500 text-sm"
+          ></p>
+        </div>
+
+        <div class="flex flex-col gap-1">
+          <label for="telefone">
+            Telefone
+            <span class="text-red-500">*</span>
+          </label>
+
+          <input
+            class="border px-3 py-1.5 rounded-md"
+            type="text"
+            id="telefone"
+            name="telefone"
+            placeholder="Digite o telefone da organização"
+            required
+            th:value="*{telefone}"
+          />
+
+          <p
+            th:if="${#fields.hasErrors('telefone')}"
+            th:errors="*{telefone}"
+            class="text-red-500 text-sm"
+          ></p>
+        </div>
+
+        <div class="flex flex-col gap-1">
+          <label for="endereco">
+            Endereço
+            <span class="text-red-500">*</span>
+          </label>
+
+          <input
+            class="border px-3 py-1.5 rounded-md"
+            type="text"
+            id="endereco"
+            name="endereco"
+            placeholder="Digite o endereço da organização"
+            required
+            th:value="*{endereco}"
+          />
+
+          <p
+            th:if="${#fields.hasErrors('endereco')}"
+            th:errors="*{endereco}"
+            class="text-red-500 text-sm"
+          ></p>
+        </div>
+
+        <div class="flex flex-col gap-1">
+          <label for="senha">
+            Senha
+            <span class="text-red-500">*</span>
+          </label>
+
+          <input
+            class="border px-3 py-1.5 rounded-md"
+            type="password"
+            id="senha"
+            name="senha"
+            placeholder="Digite nova senha"
+          />
+
+          <p
+            th:if="${#fields.hasErrors('senha')}"
+            th:errors="*{senha}"
+            class="text-red-500 text-sm"
+          ></p>
+        </div>
+
+        <div class="flex flex-col gap-1">
+          <label for="logo">Logo</label>
+
+          <input
+            class="border px-3 py-1.5 rounded-md"
+            type="file"
+            id="logo"
+            name="logo"
+            accept="image/jpeg,image/jpg,image/png,image/gif,image/webp"
+          />
+
+          <p class="text-xs text-neutral-500">
+            Formatos aceitos: JPEG, PNG, GIF, WebP (máx. 10MB)
+          </p>
+        </div>
+
+        <button
+          type="submit"
+          class="h-10 bg-blue-500 px-4 py-1.5 rounded-md text-neutral-100 font-medium transition-colors hover:bg-blue-600 flex items-center justify-center"
+        >
+          Atualizar
+        </button>
+      </form>
+
+      <form class="flex justify-center" th:action="@{/organizacoes/excluir}">
+        <button
+          class="text-red-500 text-sm flex justify-center items-center gap-2 hover:bg-red-100 rounded-md px-3 py-2 transition-colors cursor-pointer"
+        >
+          <svg
+            xmlns="http://www.w3.org/2000/svg"
+            width="24"
+            height="24"
+            viewBox="0 0 24 24"
+            fill="none"
+            stroke="currentColor"
+            stroke-width="2"
+            stroke-linecap="round"
+            stroke-linejoin="round"
+            class="lucide lucide-trash-icon lucide-trash size-4"
+          >
+            <path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6" />
+            <path d="M3 6h18" />
+            <path d="M8 6V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2" />
+          </svg>
+          Excluir minha organização
+        </button>
+      </form>
+    </main>
+  </body>
+</html>
