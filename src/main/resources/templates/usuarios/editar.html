@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html lang="pt-BR">
   <th:block
-    th:replace="fragments/head :: head('Cadastrar conta | Partiu!')"
+    th:replace="fragments/head :: head('Editar perfil | Partiu!')"
   ></th:block>
 
   <body>
@@ -25,16 +25,16 @@
       </div>
 
       <hgroup class="space-y-3">
-        <h1 class="text-center font-semibold text-2xl">Cadastre-se</h1>
+        <h1 class="text-center font-semibold text-2xl">Editar perfil</h1>
 
         <p class="text-neutral-500 text-center text-balance">
-          Crie sua conta e encontre os melhores eventos na sua cidade e região.
+          Atualize suas informações pessoais.
         </p>
       </hgroup>
 
       <form
         class="flex flex-col gap-4"
-        th:action="@{/usuarios/cadastrar}"
+        th:action="@{/usuarios/perfil/editar}"
         method="POST"
         th:object="${usuario}"
         enctype="multipart/form-data"
@@ -63,18 +63,15 @@
         </div>
 
         <div class="flex flex-col gap-1">
-          <label for="cpf">
-            CPF
-            <span class="text-red-500">*</span>
-          </label>
+          <label for="cpf"> CPF </label>
 
           <input
-            class="border px-3 py-1.5 rounded-md"
+            class="border px-3 py-1.5 rounded-md bg-gray-100 cursor-not-allowed"
             type="text"
             id="cpf"
             name="cpf"
             placeholder="Digite seu CPF"
-            required
+            readonly
             th:value="*{cpf}"
           />
 
@@ -119,8 +116,7 @@
             type="password"
             id="senha"
             name="senha"
-            placeholder="Digite sua senha"
-            required
+            placeholder="Digite nova senha"
           />
 
           <p
@@ -150,32 +146,9 @@
           type="submit"
           class="h-10 bg-blue-500 px-4 py-1.5 rounded-md text-neutral-100 font-medium transition-colors hover:bg-blue-600 flex items-center justify-center"
         >
-          Cadastrar
+          Atualizar
         </button>
       </form>
-
-      <p class="text-sm text-center">
-        Já se cadastrou?
-        <a
-          th:href="@{/entrar}"
-          class="text-blue-500 underline hover:text-blue-600"
-        >
-          Acesse sua conta
-        </a>
-      </p>
-
-      <div class="flex items-center gap-4">
-        <div class="flex-1 border-t"></div>
-        <span class="text-sm">ou</span>
-        <div class="flex-1 border-t"></div>
-      </div>
-
-      <a
-        th:href="@{/organizacoes/cadastrar}"
-        class="w-full h-10 border px-4 py-1.5 rounded-md font-medium transition-colors hover:bg-neutral-100 flex items-center justify-center"
-      >
-        Cadastre sua organização
-      </a>
     </main>
   </body>
 </html>
