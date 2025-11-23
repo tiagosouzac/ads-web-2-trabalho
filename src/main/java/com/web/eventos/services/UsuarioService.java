@@ -88,4 +88,8 @@ public class UsuarioService {
 
         return usuarioRepository.save(existing);
     }
+
+    public void excluir(Integer id) {
+        usuarioRepository.deleteById(id);
+    }
 }

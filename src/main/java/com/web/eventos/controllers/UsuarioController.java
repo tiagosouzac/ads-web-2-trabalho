@@ -118,4 +118,11 @@ public class UsuarioController {
             return "usuarios/editar";
         }
     }
+
+    @GetMapping("/excluir")
+    @PreAuthorize("isAuthenticated()")
+    public String excluir(@AuthenticationPrincipal CustomUserDetails usuarioLogado) {
+        usuarioService.excluir(usuarioLogado.getId());
+        return "redirect:/logout";
+    }
 }
