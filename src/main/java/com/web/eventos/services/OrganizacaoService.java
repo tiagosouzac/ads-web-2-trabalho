@@ -47,7 +47,6 @@ public class OrganizacaoService {
             throw new IllegalArgumentException("E-mail já cadastrado no sistema");
         }
 
-        // Upload do logo se fornecido
         if (logo != null && !logo.isEmpty()) {
             Midia logoMidia = midiaService.uploadArquivo(logo);
             organizacao.setLogo(logoMidia);
@@ -56,30 +55,6 @@ public class OrganizacaoService {
         String senha = organizacao.getSenha();
         String senhaCriptografada = passwordEncoder.encode(senha);
         organizacao.setSenha(senhaCriptografada);
-        return organizacaoRepository.save(organizacao);
-    }
-
-    /**
-     * Atualiza o logo de uma organização
-     * 
-     * @param organizacaoId ID da organização
-     * @param logo          Novo arquivo de imagem do logo
-     * @return Organização atualizada
-     * @throws IOException Se houver erro ao fazer upload do logo
-     */
-    public Organizacao atualizarLogo(Integer organizacaoId, MultipartFile logo) throws IOException {
-        Organizacao organizacao = organizacaoRepository.findById(organizacaoId)
-                .orElseThrow(() -> new IllegalArgumentException("Organização não encontrada"));
-
-        // Remover logo antigo se existir
-        if (organizacao.getLogo() != null) {
-            midiaService.removerMidia(organizacao.getLogo().getId());
-        }
-
-        // Upload do novo logo
-        Midia novoLogo = midiaService.uploadArquivo(logo);
-        organizacao.setLogo(novoLogo);
-
         return organizacaoRepository.save(organizacao);
     }
 }

@@ -8,7 +8,6 @@ import com.web.eventos.repositories.MidiaRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.io.IOException;
@@ -39,14 +38,7 @@ public class MidiaService {
     /**
      * Faz upload de um arquivo sem associação (para uso genérico como avatar, logo,
      * etc)
-     *
-     * @param file Arquivo enviado
-     * @return Objeto Midia salvo (sem associação, deve ser vinculado
-     *         posteriormente)
-     * @throws IOException              Se houver erro ao salvar o arquivo
-     * @throws IllegalArgumentException Se o arquivo não atender aos requisitos
      */
-    @Transactional
     public Midia uploadArquivo(MultipartFile file) throws IOException {
         validarArquivo(file);
         String url = salvarArquivoNoServidor(file);
@@ -62,14 +54,7 @@ public class MidiaService {
 
     /**
      * Faz upload de um arquivo associado a um evento
-     *
-     * @param file   Arquivo enviado
-     * @param evento Evento ao qual a mídia será associada
-     * @return Objeto Midia salvo
-     * @throws IOException              Se houver erro ao salvar o arquivo
-     * @throws IllegalArgumentException Se o arquivo não atender aos requisitos
      */
-    @Transactional
     public Midia uploadArquivo(MultipartFile file, Evento evento) throws IOException {
         validarArquivo(file);
         String url = salvarArquivoNoServidor(file);
@@ -86,14 +71,7 @@ public class MidiaService {
 
     /**
      * Faz upload de um arquivo associado a um local
-     *
-     * @param file  Arquivo enviado
-     * @param local Local ao qual a mídia será associada
-     * @return Objeto Midia salvo
-     * @throws IOException              Se houver erro ao salvar o arquivo
-     * @throws IllegalArgumentException Se o arquivo não atender aos requisitos
      */
-    @Transactional
     public Midia uploadArquivo(MultipartFile file, Local local) throws IOException {
         validarArquivo(file);
         String url = salvarArquivoNoServidor(file);
@@ -108,9 +86,6 @@ public class MidiaService {
         return midiaRepository.save(midia);
     }
 
-    /**
-     * Valida o arquivo enviado
-     */
     private void validarArquivo(MultipartFile file) {
         if (file.isEmpty()) {
             throw new IllegalArgumentException("O arquivo está vazio");
@@ -125,15 +100,12 @@ public class MidiaService {
 
         // Validação de tipo (apenas imagens e vídeos)
         String contentType = file.getContentType();
-        if (!isValidFileType(contentType)) {
+        if (!validarTipo(contentType)) {
             throw new IllegalArgumentException(
                     "Tipo de arquivo não permitido. Apenas imagens (JPEG, PNG, GIF, WebP) e vídeos (MP4, MPEG, MOV, AVI, WebM) são aceitos");
         }
     }
 
-    /**
-     * Salva o arquivo no servidor e retorna a URL
-     */
     private String salvarArquivoNoServidor(MultipartFile file) throws IOException {
         // Criar diretório se não existir
         Path uploadPath = Paths.get(uploadDir);
@@ -156,10 +128,7 @@ public class MidiaService {
         return "/uploads/" + filename;
     }
 
-    /**
-     * Verifica se o tipo de arquivo é válido
-     */
-    private boolean isValidFileType(String contentType) {
+    private boolean validarTipo(String contentType) {
         if (contentType == null) {
             return false;
         }
@@ -167,9 +136,6 @@ public class MidiaService {
                 ALLOWED_VIDEO_TYPES.contains(contentType.toLowerCase());
     }
 
-    /**
-     * Determina o tipo de mídia baseado no content type
-     */
     private MidiaTipo determinarTipoMidia(String contentType) {
         if (contentType == null) {
             return MidiaTipo.IMAGEM;
@@ -180,45 +146,29 @@ public class MidiaService {
         return MidiaTipo.IMAGEM;
     }
 
-    /**
-     * Remove uma mídia pelo ID
-     */
-    @Transactional
     public void removerMidia(Integer id) {
         Midia midia = midiaRepository.findById(id)
                 .orElseThrow(() -> new IllegalArgumentException("Mídia não encontrada"));
 
-        // Remover arquivo físico do servidor
         try {
             String filename = midia.getUrl().replace("/uploads/", "");
             Path filePath = Paths.get(uploadDir).resolve(filename);
             Files.deleteIfExists(filePath);
         } catch (IOException e) {
-            // Log do erro mas não impede a remoção do registro
             System.err.println("Erro ao remover arquivo físico: " + e.getMessage());
         }
 
-        // Remover registro do banco de dados
         midiaRepository.delete(midia);
     }
 
-    /**
-     * Busca mídias por evento
-     */
     public List<Midia> buscarPorEvento(Integer eventoId) {
         return midiaRepository.findByEventoId(eventoId);
     }
 
-    /**
-     * Busca mídias por local
-     */
     public List<Midia> buscarPorLocal(Integer localId) {
         return midiaRepository.findByLocalId(localId);
     }
 
-    /**
-     * Busca uma mídia por ID
-     */
     public Midia buscarPorId(Integer id) {
         return midiaRepository.findById(id)
                 .orElseThrow(() -> new IllegalArgumentException("Mídia não encontrada"));

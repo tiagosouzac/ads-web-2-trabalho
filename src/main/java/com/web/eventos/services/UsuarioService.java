@@ -46,7 +46,6 @@ public class UsuarioService {
             throw new IllegalArgumentException("E-mail já cadastrado no sistema");
         }
 
-        // Upload do avatar se fornecido
         if (avatar != null && !avatar.isEmpty()) {
             Midia avatarMidia = midiaService.uploadArquivo(avatar);
             usuario.setAvatar(avatarMidia);
@@ -55,30 +54,6 @@ public class UsuarioService {
         String senha = usuario.getSenha();
         String senhaCriptografada = passwordEncoder.encode(senha);
         usuario.setSenha(senhaCriptografada);
-        return usuarioRepository.save(usuario);
-    }
-
-    /**
-     * Atualiza o avatar de um usuário
-     * 
-     * @param usuarioId ID do usuário
-     * @param avatar    Novo arquivo de imagem do avatar
-     * @return Usuario atualizado
-     * @throws IOException Se houver erro ao fazer upload do avatar
-     */
-    public Usuario atualizarAvatar(Integer usuarioId, MultipartFile avatar) throws IOException {
-        Usuario usuario = usuarioRepository.findById(usuarioId)
-                .orElseThrow(() -> new IllegalArgumentException("Usuário não encontrado"));
-
-        // Remover avatar antigo se existir
-        if (usuario.getAvatar() != null) {
-            midiaService.removerMidia(usuario.getAvatar().getId());
-        }
-
-        // Upload do novo avatar
-        Midia novoAvatar = midiaService.uploadArquivo(avatar);
-        usuario.setAvatar(novoAvatar);
-
         return usuarioRepository.save(usuario);
     }
 }
