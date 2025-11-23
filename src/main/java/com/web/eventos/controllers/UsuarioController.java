@@ -38,7 +38,7 @@ public class UsuarioController {
         return "usuarios/cadastrar";
     }
 
-    @PostMapping("/salvar")
+    @PostMapping
     public String salvar(@ModelAttribute @Valid Usuario usuario, BindingResult result,
             @RequestParam(value = "avatar", required = false) MultipartFile avatar, Model model) {
         if (result.hasErrors()) {

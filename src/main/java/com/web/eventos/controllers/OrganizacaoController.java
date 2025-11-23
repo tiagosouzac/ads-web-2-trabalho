@@ -38,7 +38,7 @@ public class OrganizacaoController {
         return "organizacoes/cadastrar";
     }
 
-    @PostMapping("/salvar")
+    @PostMapping
     public String salvar(@ModelAttribute @Valid Organizacao organizacao, BindingResult result,
             @RequestParam(value = "logo", required = false) MultipartFile logo, Model model) {
         if (result.hasErrors()) {
