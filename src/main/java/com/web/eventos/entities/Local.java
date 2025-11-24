@@ -15,6 +15,8 @@ import org.hibernate.annotations.UpdateTimestamp;
 
 import java.time.LocalDateTime;
 
+import com.web.eventos.entities.Estado;
+
 @Entity
 @Table(name = "local")
 @Data
@@ -31,20 +33,24 @@ public class Local {
     @Column(nullable = false, length = 255)
     private String nome;
 
+    @NotBlank(message = "O endereço é obrigatório")
     @Size(max = 255, message = "O endereço deve ter no máximo 255 caracteres")
-    @Column(length = 255)
+    @Column(nullable = false, length = 255)
     private String endereco;
 
+    @NotBlank(message = "A cidade é obrigatória")
     @Size(max = 100, message = "A cidade deve ter no máximo 100 caracteres")
-    @Column(length = 100)
+    @Column(nullable = false, length = 100)
     private String cidade;
 
-    @Size(max = 100, message = "O estado deve ter no máximo 100 caracteres")
-    @Column(length = 100)
-    private String estado;
+    @NotNull(message = "O estado é obrigatório")
+    @Enumerated(EnumType.STRING)
+    @Column(nullable = false, length = 2)
+    private Estado estado;
 
+    @NotBlank(message = "O CEP é obrigatório")
     @Pattern(regexp = "^\\d{5}-?\\d{3}$", message = "CEP deve estar no formato 00000-000")
-    @Column(length = 10)
+    @Column(nullable = false, length = 10)
     private String cep;
 
     @NotNull(message = "A capacidade é obrigatória")
@@ -54,6 +60,10 @@ public class Local {
 
     @Column(columnDefinition = "TEXT")
     private String facilidades;
+
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "organizacao_id", nullable = false)
+    private Organizacao organizacao;
 
     @CreationTimestamp
     @Column(name = "criado_em", nullable = false, updatable = false)

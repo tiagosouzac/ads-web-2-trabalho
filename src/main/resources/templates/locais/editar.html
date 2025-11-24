@@ -1,0 +1,222 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+  <th:block
+    th:replace="fragments/head :: head('Editar local | Partiu!')"
+  ></th:block>
+
+  <body>
+    <th:block th:replace="fragments/header :: header"></th:block>
+
+    <main class="max-w-96 mx-auto space-y-6 py-12">
+      <hgroup class="space-y-3">
+        <h1 class="text-center font-semibold text-2xl">Editar local</h1>
+
+        <p class="text-neutral-500 text-center text-balance">
+          Atualize as informações do local.
+        </p>
+      </hgroup>
+
+      <form
+        class="flex flex-col gap-4"
+        th:action="@{'/locais/editar/' + ${local.id}}"
+        method="POST"
+        th:object="${local}"
+      >
+        <div class="flex flex-col gap-1">
+          <label for="nome">
+            Nome
+            <span class="text-red-500">*</span>
+          </label>
+
+          <input
+            class="border px-3 py-1.5 rounded-md"
+            type="text"
+            id="nome"
+            name="nome"
+            placeholder="Digite o nome do local"
+            required
+            th:value="*{nome}"
+          />
+
+          <p
+            th:if="${#fields.hasErrors('nome')}"
+            th:errors="*{nome}"
+            class="text-red-500 text-sm"
+          ></p>
+        </div>
+
+        <div class="flex flex-col gap-1">
+          <label for="endereco">
+            Endereço
+            <span class="text-red-500">*</span>
+          </label>
+
+          <input
+            class="border px-3 py-1.5 rounded-md"
+            type="text"
+            id="endereco"
+            name="endereco"
+            placeholder="Digite o endereço"
+            required
+            th:value="*{endereco}"
+          />
+
+          <p
+            th:if="${#fields.hasErrors('endereco')}"
+            th:errors="*{endereco}"
+            class="text-red-500 text-sm"
+          ></p>
+        </div>
+
+        <div class="flex flex-col gap-1">
+          <label for="cidade">
+            Cidade
+            <span class="text-red-500">*</span>
+          </label>
+
+          <input
+            class="border px-3 py-1.5 rounded-md"
+            type="text"
+            id="cidade"
+            name="cidade"
+            placeholder="Digite a cidade"
+            required
+            th:value="*{cidade}"
+          />
+
+          <p
+            th:if="${#fields.hasErrors('cidade')}"
+            th:errors="*{cidade}"
+            class="text-red-500 text-sm"
+          ></p>
+        </div>
+
+        <div class="flex flex-col gap-1">
+          <label for="estado">
+            Estado
+            <span class="text-red-500">*</span>
+          </label>
+
+          <select
+            class="border px-3 py-1.5 rounded-md"
+            id="estado"
+            name="estado"
+            required
+          >
+            <option value="">Selecione um estado</option>
+            <option
+              th:each="estado : ${T(com.web.eventos.entities.Estado).values()}"
+              th:value="${estado}"
+              th:text="${estado.nome}"
+              th:selected="${estado.name() == local.estado.name()}"
+            ></option>
+          </select>
+
+          <p
+            th:if="${#fields.hasErrors('estado')}"
+            th:errors="*{estado}"
+            class="text-red-500 text-sm"
+          ></p>
+        </div>
+
+        <div class="flex flex-col gap-1">
+          <label for="cep">
+            CEP
+            <span class="text-red-500">*</span>
+          </label>
+
+          <input
+            class="border px-3 py-1.5 rounded-md"
+            type="text"
+            id="cep"
+            name="cep"
+            placeholder="Digite o CEP"
+            required
+            th:value="*{cep}"
+          />
+
+          <p
+            th:if="${#fields.hasErrors('cep')}"
+            th:errors="*{cep}"
+            class="text-red-500 text-sm"
+          ></p>
+        </div>
+
+        <div class="flex flex-col gap-1">
+          <label for="capacidade">
+            Capacidade
+            <span class="text-red-500">*</span>
+          </label>
+
+          <input
+            class="border px-3 py-1.5 rounded-md"
+            type="number"
+            id="capacidade"
+            name="capacidade"
+            placeholder="Digite a capacidade"
+            required
+            th:value="*{capacidade}"
+          />
+
+          <p
+            th:if="${#fields.hasErrors('capacidade')}"
+            th:errors="*{capacidade}"
+            class="text-red-500 text-sm"
+          ></p>
+        </div>
+
+        <div class="flex flex-col gap-1">
+          <label for="facilidades"> Facilidades </label>
+
+          <textarea
+            class="border px-3 py-1.5 rounded-md"
+            id="facilidades"
+            name="facilidades"
+            placeholder="Digite as facilidades"
+            th:text="*{facilidades}"
+          ></textarea>
+
+          <p
+            th:if="${#fields.hasErrors('facilidades')}"
+            th:errors="*{facilidades}"
+            class="text-red-500 text-sm"
+          ></p>
+        </div>
+
+        <button
+          type="submit"
+          class="h-10 bg-blue-500 px-4 py-1.5 rounded-md text-neutral-100 font-medium transition-colors hover:bg-blue-600 flex items-center justify-center"
+        >
+          Atualizar
+        </button>
+      </form>
+
+      <form
+        class="flex justify-center"
+        th:action="@{'/locais/excluir/' + ${local.id}}"
+      >
+        <button
+          class="text-red-500 text-sm flex justify-center items-center gap-2 hover:bg-red-100 rounded-md px-3 py-2 transition-colors cursor-pointer"
+        >
+          <svg
+            xmlns="http://www.w3.org/2000/svg"
+            width="24"
+            height="24"
+            viewBox="0 0 24 24"
+            fill="none"
+            stroke="currentColor"
+            stroke-width="2"
+            stroke-linecap="round"
+            stroke-linejoin="round"
+            class="lucide lucide-trash-icon lucide-trash size-4"
+          >
+            <path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6" />
+            <path d="M3 6h18" />
+            <path d="M8 6V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2" />
+          </svg>
+          Excluir local
+        </button>
+      </form>
+    </main>
+  </body>
+</html>

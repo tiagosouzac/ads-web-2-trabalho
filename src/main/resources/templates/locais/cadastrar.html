@@ -1,0 +1,195 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+  <th:block
+    th:replace="fragments/head :: head('Cadastrar local | Partiu!')"
+  ></th:block>
+
+  <body>
+    <th:block th:replace="fragments/header :: header"></th:block>
+
+    <main class="max-w-96 mx-auto space-y-6 py-12">
+      <hgroup class="space-y-3">
+        <h1 class="text-center font-semibold text-2xl">Cadastrar local</h1>
+
+        <p class="text-neutral-500 text-center text-balance">
+          Adicione um novo local para eventos.
+        </p>
+      </hgroup>
+
+      <form
+        class="flex flex-col gap-4"
+        th:action="@{/locais/cadastrar}"
+        method="POST"
+        th:object="${local}"
+      >
+        <div class="flex flex-col gap-1">
+          <label for="nome">
+            Nome
+            <span class="text-red-500">*</span>
+          </label>
+
+          <input
+            class="border px-3 py-1.5 rounded-md"
+            type="text"
+            id="nome"
+            name="nome"
+            placeholder="Digite o nome do local"
+            required
+            th:value="*{nome}"
+          />
+
+          <p
+            th:if="${#fields.hasErrors('nome')}"
+            th:errors="*{nome}"
+            class="text-red-500 text-sm"
+          ></p>
+        </div>
+
+        <div class="flex flex-col gap-1">
+          <label for="endereco">
+            Endereço
+            <span class="text-red-500">*</span>
+          </label>
+
+          <input
+            class="border px-3 py-1.5 rounded-md"
+            type="text"
+            id="endereco"
+            name="endereco"
+            placeholder="Digite o endereço"
+            required
+            th:value="*{endereco}"
+          />
+
+          <p
+            th:if="${#fields.hasErrors('endereco')}"
+            th:errors="*{endereco}"
+            class="text-red-500 text-sm"
+          ></p>
+        </div>
+
+        <div class="flex flex-col gap-1">
+          <label for="cidade">
+            Cidade
+            <span class="text-red-500">*</span>
+          </label>
+
+          <input
+            class="border px-3 py-1.5 rounded-md"
+            type="text"
+            id="cidade"
+            name="cidade"
+            placeholder="Digite a cidade"
+            required
+            th:value="*{cidade}"
+          />
+
+          <p
+            th:if="${#fields.hasErrors('cidade')}"
+            th:errors="*{cidade}"
+            class="text-red-500 text-sm"
+          ></p>
+        </div>
+
+        <div class="flex flex-col gap-1">
+          <label for="estado">
+            Estado
+            <span class="text-red-500">*</span>
+          </label>
+
+          <select
+            class="border px-3 py-1.5 rounded-md"
+            id="estado"
+            name="estado"
+            required
+          >
+            <option value="">Selecione um estado</option>
+            <option
+              th:each="estado : ${T(com.web.eventos.entities.Estado).values()}"
+              th:value="${estado}"
+              th:text="${estado.nome}"
+            ></option>
+          </select>
+
+          <p
+            th:if="${#fields.hasErrors('estado')}"
+            th:errors="*{estado}"
+            class="text-red-500 text-sm"
+          ></p>
+        </div>
+
+        <div class="flex flex-col gap-1">
+          <label for="cep">
+            CEP
+            <span class="text-red-500">*</span>
+          </label>
+
+          <input
+            class="border px-3 py-1.5 rounded-md"
+            type="text"
+            id="cep"
+            name="cep"
+            placeholder="Digite o CEP"
+            required
+            th:value="*{cep}"
+          />
+
+          <p
+            th:if="${#fields.hasErrors('cep')}"
+            th:errors="*{cep}"
+            class="text-red-500 text-sm"
+          ></p>
+        </div>
+
+        <div class="flex flex-col gap-1">
+          <label for="capacidade">
+            Capacidade
+            <span class="text-red-500">*</span>
+          </label>
+
+          <input
+            class="border px-3 py-1.5 rounded-md"
+            type="number"
+            id="capacidade"
+            name="capacidade"
+            placeholder="Digite a capacidade"
+            required
+            th:value="*{capacidade}"
+          />
+
+          <p
+            th:if="${#fields.hasErrors('capacidade')}"
+            th:errors="*{capacidade}"
+            class="text-red-500 text-sm"
+          ></p>
+        </div>
+
+        <div class="flex flex-col gap-1">
+          <label for="facilidades"> Facilidades </label>
+
+          <textarea
+            class="border px-3 py-1.5 rounded-md"
+            id="facilidades"
+            name="facilidades"
+            placeholder="Digite as facilidades"
+            rows="3"
+            th:text="*{facilidades}"
+          ></textarea>
+
+          <p
+            th:if="${#fields.hasErrors('facilidades')}"
+            th:errors="*{facilidades}"
+            class="text-red-500 text-sm"
+          ></p>
+        </div>
+
+        <button
+          type="submit"
+          class="h-10 bg-blue-500 px-4 py-1.5 rounded-md text-neutral-100 font-medium transition-colors hover:bg-blue-600 flex items-center justify-center"
+        >
+          Cadastrar
+        </button>
+      </form>
+    </main>
+  </body>
+</html>
