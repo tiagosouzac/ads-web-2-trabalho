@@ -2,6 +2,7 @@ package com.web.eventos.entities;
 
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Size;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -46,15 +47,13 @@ public class Evento {
     @Column(name = "data_inicio")
     private LocalDateTime dataInicio;
 
-    @Column(name = "data_fim")
+    @Column(name = "data_fim", nullable = false)
+    @NotNull(message = "A data de fim é obrigatória")
     private LocalDateTime dataFim;
 
     @Enumerated(EnumType.STRING)
     @Column(nullable = false, length = 20)
     private EventoStatus status;
-
-    @Column(name = "banner_url", length = 500)
-    private String bannerUrl;
 
     @CreationTimestamp
     @Column(name = "criado_em", nullable = false, updatable = false)

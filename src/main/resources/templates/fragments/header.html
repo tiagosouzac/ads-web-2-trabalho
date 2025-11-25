@@ -18,92 +18,66 @@
       </a>
     </div>
 
-    <div
-      class="flex items-center gap-1.5 relative group/user-menu"
-      sec:authorize="isAuthenticated()"
-    >
-      <div class="flex items-center gap-2">
-        <img
-          th:if="${#authentication.principal.avatar != null}"
-          th:src="${#authentication.principal.avatar.url}"
-          th:alt="${#authentication.principal.nome}"
-          class="w-8 h-8 rounded-full object-cover border"
-        />
-
-        <div
-          th:if="${#authentication.principal.avatar == null}"
-          class="w-8 h-8 rounded-full bg-blue-500 text-white flex items-center justify-center text-sm font-medium"
-          th:text="${#strings.substring(#authentication.principal.nome, 0, 1).toUpperCase()}"
-        ></div>
+    <div class="flex gap-4" sec:authorize="isAuthenticated()">
+      <div th:if="${#authentication.principal.tipo == 'ORGANIZACAO'}">
+        <a
+          th:href="@{/eventos/cadastrar}"
+          class="h-8 bg-blue-500 px-2 rounded-md text-neutral-100 text-sm font-medium transition-colors hover:bg-blue-600 flex items-center justify-center gap-1.5"
+        >
+          <svg
+            xmlns="http://www.w3.org/2000/svg"
+            width="24"
+            height="24"
+            viewBox="0 0 24 24"
+            fill="none"
+            stroke="currentColor"
+            stroke-width="2"
+            stroke-linecap="round"
+            stroke-linejoin="round"
+            class="lucide lucide-plus-icon lucide-plus size-4"
+          >
+            <path d="M5 12h14" />
+            <path d="M12 5v14" />
+          </svg>
+          Novo Evento
+        </a>
       </div>
 
-      <div
-        class="absolute top-full right-0 pt-1 group-hover/user-menu:block hidden"
-      >
-        <div class="bg-white border rounded-md shadow-lg w-48 flex flex-col">
-          <div class="px-3 py-2 text-sm border-b">
-            <div
-              class="truncate"
-              th:text="${#authentication.principal.nome}"
-            ></div>
-            <div
-              class="text-xs text-neutral-500 truncate"
-              th:text="${#authentication.principal.email}"
-            ></div>
-          </div>
+      <div class="flex items-center gap-1.5 relative group/user-menu">
+        <div class="flex items-center gap-2">
+          <img
+            th:if="${#authentication.principal.avatar != null}"
+            th:src="${#authentication.principal.avatar.url}"
+            th:alt="${#authentication.principal.nome}"
+            class="w-8 h-8 rounded-full object-cover border"
+          />
 
-          <div class="flex flex-col py-1">
-            <a
-              th:href="${#authentication.principal.tipo == 'USUARIO' ? '/usuarios/perfil/editar' : '/organizacoes/perfil/editar'}"
-              class="px-3 py-2 text-sm hover:bg-neutral-100 flex items-center gap-2"
-            >
-              <svg
-                xmlns="http://www.w3.org/2000/svg"
-                width="24"
-                height="24"
-                viewBox="0 0 24 24"
-                fill="none"
-                stroke="currentColor"
-                stroke-width="2"
-                stroke-linecap="round"
-                stroke-linejoin="round"
-                class="lucide lucide-user-icon lucide-user size-4"
-              >
-                <path d="M19 21v-2a4 4 0 0 0-4-4H9a4 4 0 0 0-4 4v2" />
-                <circle cx="12" cy="7" r="4" />
-              </svg>
-              Meu Perfil
-            </a>
+          <div
+            th:if="${#authentication.principal.avatar == null}"
+            class="w-8 h-8 rounded-full bg-blue-500 text-white flex items-center justify-center text-sm font-medium"
+            th:text="${#strings.substring(#authentication.principal.nome, 0, 1).toUpperCase()}"
+          ></div>
+        </div>
 
-            <a
-              th:if="${#authentication.principal.tipo == 'ORGANIZACAO'}"
-              th:href="@{/locais}"
-              class="px-3 py-2 text-sm hover:bg-neutral-100 flex items-center gap-2"
-            >
-              <svg
-                xmlns="http://www.w3.org/2000/svg"
-                width="24"
-                height="24"
-                viewBox="0 0 24 24"
-                fill="none"
-                stroke="currentColor"
-                stroke-width="2"
-                stroke-linecap="round"
-                stroke-linejoin="round"
-                class="lucide lucide-map-pin-icon lucide-map-pin size-4"
-              >
-                <path
-                  d="M20 10c0 4.993-5.539 10.193-7.399 11.799a1 1 0 0 1-1.202 0C9.539 20.193 4 14.993 4 10a8 8 0 0 1 16 0"
-                />
-                <circle cx="12" cy="10" r="3" />
-              </svg>
-              Meus Locais
-            </a>
+        <div
+          class="absolute top-full right-0 pt-1 group-hover/user-menu:block hidden"
+        >
+          <div class="bg-white border rounded-md shadow-lg w-48 flex flex-col">
+            <div class="px-3 py-2 text-sm border-b">
+              <div
+                class="truncate"
+                th:text="${#authentication.principal.nome}"
+              ></div>
+              <div
+                class="text-xs text-neutral-500 truncate"
+                th:text="${#authentication.principal.email}"
+              ></div>
+            </div>
 
-            <form th:action="@{/logout}" method="post">
-              <button
-                type="submit"
-                class="w-full text-left px-3 py-2 text-sm hover:bg-red-100 text-red-700 flex items-center gap-2 cursor-pointer"
+            <div class="flex flex-col py-1">
+              <a
+                th:href="${#authentication.principal.tipo == 'USUARIO' ? '/usuarios/perfil/editar' : '/organizacoes/perfil/editar'}"
+                class="px-3 py-2 text-sm hover:bg-neutral-100 flex items-center gap-2"
               >
                 <svg
                   xmlns="http://www.w3.org/2000/svg"
@@ -115,15 +89,102 @@
                   stroke-width="2"
                   stroke-linecap="round"
                   stroke-linejoin="round"
-                  class="lucide lucide-log-out-icon lucide-log-out size-4"
+                  class="lucide lucide-user-icon lucide-user size-4"
                 >
-                  <path d="m16 17 5-5-5-5" />
-                  <path d="M21 12H9" />
-                  <path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4" />
+                  <path d="M19 21v-2a4 4 0 0 0-4-4H9a4 4 0 0 0-4 4v2" />
+                  <circle cx="12" cy="7" r="4" />
                 </svg>
-                Sair
-              </button>
-            </form>
+                Meu Perfil
+              </a>
+
+              <a
+                th:if="${#authentication.principal.tipo == 'ORGANIZACAO'}"
+                th:href="@{/eventos}"
+                class="px-3 py-2 text-sm hover:bg-neutral-100 flex items-center gap-2"
+              >
+                <svg
+                  xmlns="http://www.w3.org/2000/svg"
+                  width="24"
+                  height="24"
+                  viewBox="0 0 24 24"
+                  fill="none"
+                  stroke="currentColor"
+                  stroke-width="2"
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                  class="lucide lucide-party-popper-icon lucide-party-popper size-4"
+                >
+                  <path d="M5.8 11.3 2 22l10.7-3.79" />
+                  <path d="M4 3h.01" />
+                  <path d="M22 8h.01" />
+                  <path d="M15 2h.01" />
+                  <path d="M22 20h.01" />
+                  <path
+                    d="m22 2-2.24.75a2.9 2.9 0 0 0-1.96 3.12c.1.86-.57 1.63-1.45 1.63h-.38c-.86 0-1.6.6-1.76 1.44L14 10"
+                  />
+                  <path
+                    d="m22 13-.82-.33c-.86-.34-1.82.2-1.98 1.11c-.11.7-.72 1.22-1.43 1.22H17"
+                  />
+                  <path
+                    d="m11 2 .33.82c.34.86-.2 1.82-1.11 1.98C9.52 4.9 9 5.52 9 6.23V7"
+                  />
+                  <path
+                    d="M11 13c1.93 1.93 2.83 4.17 2 5-.83.83-3.07-.07-5-2-1.93-1.93-2.83-4.17-2-5 .83-.83 3.07.07 5 2Z"
+                  />
+                </svg>
+                Meus Eventos
+              </a>
+
+              <a
+                th:if="${#authentication.principal.tipo == 'ORGANIZACAO'}"
+                th:href="@{/locais}"
+                class="px-3 py-2 text-sm hover:bg-neutral-100 flex items-center gap-2"
+              >
+                <svg
+                  xmlns="http://www.w3.org/2000/svg"
+                  width="24"
+                  height="24"
+                  viewBox="0 0 24 24"
+                  fill="none"
+                  stroke="currentColor"
+                  stroke-width="2"
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                  class="lucide lucide-map-pin-icon lucide-map-pin size-4"
+                >
+                  <path
+                    d="M20 10c0 4.993-5.539 10.193-7.399 11.799a1 1 0 0 1-1.202 0C9.539 20.193 4 14.993 4 10a8 8 0 0 1 16 0"
+                  />
+                  <circle cx="12" cy="10" r="3" />
+                </svg>
+                Meus Locais
+              </a>
+
+              <form th:action="@{/logout}" method="post">
+                <button
+                  type="submit"
+                  class="w-full text-left px-3 py-2 text-sm hover:bg-red-100 text-red-700 flex items-center gap-2 cursor-pointer"
+                >
+                  <svg
+                    xmlns="http://www.w3.org/2000/svg"
+                    width="24"
+                    height="24"
+                    viewBox="0 0 24 24"
+                    fill="none"
+                    stroke="currentColor"
+                    stroke-width="2"
+                    stroke-linecap="round"
+                    stroke-linejoin="round"
+                    class="lucide lucide-log-out-icon lucide-log-out size-4"
+                  >
+                    <path d="m16 17 5-5-5-5" />
+                    <path d="M21 12H9" />
+                    <path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4" />
+                  </svg>
+                  Sair
+                </button>
+              </form>
+            </div>
           </div>
         </div>
       </div>
