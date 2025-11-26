@@ -9,6 +9,19 @@
 
     <main class="container">
       <section
+        th:if="${banners != null and !banners.isEmpty()}"
+        class="space-y-4 mt-12"
+      >
+        <div th:each="banner : ${banners}" class="w-full">
+          <img
+            th:src="${banner.url}"
+            th:alt="${banner.titulo}"
+            class="w-full h-auto rounded-lg shadow-md"
+          />
+        </div>
+      </section>
+
+      <section
         th:each="categoria : ${eventosPorCategoria}"
         class="space-y-6 mt-12"
       >

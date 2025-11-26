@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+  <th:block
+    th:replace="fragments/head :: head('Adicionar Banner | Partiu!')"
+  ></th:block>
+
+  <body>
+    <th:block th:replace="fragments/header :: header"></th:block>
+
+    <main class="max-w-96 mx-auto space-y-6 py-12">
+      <hgroup class="space-y-3">
+        <h1 class="text-center font-semibold text-2xl">Adicionar Banner</h1>
+
+        <p class="text-neutral-500 text-center text-balance">
+          Adicione um novo banner promocional.
+        </p>
+      </hgroup>
+
+      <form
+        class="flex flex-col gap-4"
+        th:action="@{/admin/banners/cadastrar}"
+        method="POST"
+        enctype="multipart/form-data"
+      >
+        <div class="flex flex-col gap-1">
+          <label for="titulo">
+            Título
+            <span class="text-red-500">*</span>
+          </label>
+
+          <input
+            class="border px-3 py-1.5 rounded-md"
+            type="text"
+            id="titulo"
+            name="titulo"
+            placeholder="Digite o título do banner"
+            required
+          />
+        </div>
+
+        <div class="flex flex-col gap-1">
+          <label for="imagem">
+            Imagem
+            <span class="text-red-500">*</span>
+          </label>
+
+          <input
+            class="border px-3 py-1.5 rounded-md"
+            type="file"
+            id="imagem"
+            name="imagem"
+            accept="image/*"
+            required
+          />
+
+          <p class="text-sm text-gray-500">Selecione uma imagem (máx. 10MB)</p>
+        </div>
+
+        <button
+          type="submit"
+          class="h-10 bg-blue-500 px-4 py-1.5 rounded-md text-neutral-100 font-medium transition-colors hover:bg-blue-600 flex items-center justify-center"
+        >
+          Adicionar Banner
+        </button>
+      </form>
+    </main>
+  </body>
+</html>
