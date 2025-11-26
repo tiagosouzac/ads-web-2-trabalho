@@ -1,0 +1,64 @@
+[data-slider] {
+  position: relative;
+}
+
+[data-slider] [data-slides] {
+  overflow-x: auto;
+  overflow-y: hidden;
+  scroll-snap-type: x mandatory;
+  scroll-behavior: smooth;
+  scrollbar-width: none;
+  display: flex;
+}
+
+[data-slider] [data-slides]::-webkit-scrollbar {
+  display: none;
+}
+
+[data-slider] [data-slides] > * {
+  max-width: 100%;
+  width: 100%;
+  margin: 0;
+  scroll-snap-align: start;
+  flex-shrink: 0;
+}
+
+[data-slider] .buttons {
+  transform: translate(-50%, -50%);
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  pointer-events: none;
+}
+
+[data-slider] .buttons button {
+  width: 3rem;
+  height: 3rem;
+  border: 0;
+  border-radius: 3rem;
+  opacity: 0.5;
+  background: #ffffff;
+  line-height: 0;
+  transition: opacity 0.3s;
+  pointer-events: all;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+[data-slider] .buttons button:focus {
+  outline: none;
+}
+
+[data-slider] .buttons button:not(:disabled):hover {
+  opacity: 1;
+}
+
+[data-slider] .buttons button:disabled {
+  cursor: default;
+  opacity: 0.3;
+}

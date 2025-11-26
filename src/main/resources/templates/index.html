@@ -7,23 +7,60 @@
   <body>
     <th:block th:replace="fragments/header :: header"></th:block>
 
-    <main class="container">
+    <main>
       <section
         th:if="${banners != null and !banners.isEmpty()}"
-        class="space-y-4 mt-12"
+        data-slider
+        data-infinite
+        data-interval="5000"
       >
-        <div th:each="banner : ${banners}" class="w-full">
-          <img
-            th:src="${banner.url}"
-            th:alt="${banner.titulo}"
-            class="w-full h-auto rounded-lg shadow-md"
-          />
+        <div data-slides>
+          <div th:each="banner : ${banners}">
+            <img
+              th:src="${banner.url}"
+              th:alt="${banner.titulo}"
+              class="w-full h-120 aspect-video object-cover"
+            />
+          </div>
+        </div>
+
+        <div class="buttons container">
+          <button data-prev-slide aria-label="Anterior">
+            <svg
+              xmlns="http://www.w3.org/2000/svg"
+              width="24"
+              height="24"
+              viewBox="0 0 24 24"
+              fill="none"
+              stroke="currentColor"
+              stroke-width="2"
+              stroke-linecap="round"
+              stroke-linejoin="round"
+            >
+              <polyline points="15 18 9 12 15 6"></polyline>
+            </svg>
+          </button>
+          <button data-next-slide aria-label="Próximo">
+            <svg
+              xmlns="http://www.w3.org/2000/svg"
+              width="24"
+              height="24"
+              viewBox="0 0 24 24"
+              fill="none"
+              stroke="currentColor"
+              stroke-width="2"
+              stroke-linecap="round"
+              stroke-linejoin="round"
+            >
+              <polyline points="9 18 15 12 9 6"></polyline>
+            </svg>
+          </button>
         </div>
       </section>
 
       <section
         th:each="categoria : ${eventosPorCategoria}"
-        class="space-y-6 mt-12"
+        class="space-y-6 mt-12 container"
       >
         <div class="flex justify-between items-center gap-4">
           <h2
