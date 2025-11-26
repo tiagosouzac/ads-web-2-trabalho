@@ -11,6 +11,7 @@ import lombok.NoArgsConstructor;
 import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.UpdateTimestamp;
 
+import java.math.BigDecimal;
 import java.time.LocalDateTime;
 
 @Entity
@@ -43,6 +44,13 @@ public class Evento {
 
     @Column(columnDefinition = "TEXT")
     private String descricao;
+
+    @Column(precision = 10, scale = 2, nullable = false)
+    @NotNull(message = "O preço é obrigatório")
+    private BigDecimal preco;
+
+    @Column(name = "idade_minima")
+    private Integer idadeMinima;
 
     @Column(name = "data_inicio")
     private LocalDateTime dataInicio;

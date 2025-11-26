@@ -2,13 +2,20 @@ package com.web.eventos.services;
 
 import org.springframework.stereotype.Service;
 
+import com.web.eventos.dtos.EventoCardDto;
+import com.web.eventos.entities.Categoria;
 import com.web.eventos.entities.Evento;
+import com.web.eventos.entities.EventoStatus;
 import com.web.eventos.entities.Midia;
+import com.web.eventos.entities.MidiaTipo;
 import com.web.eventos.entities.Organizacao;
 import com.web.eventos.repositories.EventoRepository;
 import com.web.eventos.repositories.MidiaRepository;
 
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
+import java.util.stream.Collectors;
 
 @Service
 public class EventoService {
@@ -40,6 +47,8 @@ public class EventoService {
         existing.setLocal(evento.getLocal());
         existing.setNome(evento.getNome());
         existing.setDescricao(evento.getDescricao());
+        existing.setPreco(evento.getPreco());
+        existing.setIdadeMinima(evento.getIdadeMinima());
         existing.setDataInicio(evento.getDataInicio());
         existing.setDataFim(evento.getDataFim());
         existing.setStatus(evento.getStatus());
@@ -48,11 +57,31 @@ public class EventoService {
     }
 
     public void excluir(Integer id) {
-        // Delete associated midias first
         List<Midia> midias = midiaRepository.findByEventoId(id);
         midiaRepository.deleteAll(midias);
 
-        // Then delete the event
         eventoRepository.deleteById(id);
+    }
+
+    public Map<Categoria, List<EventoCardDto>> getEventosPorCategoria() {
+        Map<Categoria, List<EventoCardDto>> map = new HashMap<>();
+
+        for (Categoria cat : Categoria.values()) {
+            List<Evento> eventos = eventoRepository.findFirst4ByCategoriaAndStatus(cat, EventoStatus.PUBLICADO);
+
+            if (!eventos.isEmpty()) {
+                List<EventoCardDto> eventoCards = eventos.stream().map(evento -> {
+                    String imagemUrl = midiaRepository.findFirstByEventoIdAndTipo(evento.getId(), MidiaTipo.IMAGEM)
+                            .map(Midia::getUrl)
+                            .orElse(null);
+
+                    return new EventoCardDto(evento, imagemUrl);
+                }).collect(Collectors.toList());
+
+                map.put(cat, eventoCards);
+            }
+        }
+
+        return map;
     }
 }

@@ -6,5 +6,36 @@
 
   <body>
     <th:block th:replace="fragments/header :: header"></th:block>
+
+    <main class="container">
+      <section
+        th:each="categoria : ${eventosPorCategoria}"
+        class="space-y-6 mt-12"
+      >
+        <div class="flex justify-between items-center gap-4">
+          <h2
+            th:text="${categoria.key.displayName}"
+            class="text-2xl font-semibold"
+          ></h2>
+
+          <a
+            th:if="${#lists.size(categoria.value) > 4}"
+            th:href="@{'/eventos/categoria/' + ${categoria.key.name()}}"
+            class="text-sm text-neutral-500"
+          >
+            Ver todos
+          </a>
+        </div>
+
+        <div
+          th:each="eventoCard : ${categoria.value}"
+          class="grid grid-cols-[repeat(auto-fill,minmax(20rem,1fr))] gap-4"
+        >
+          <th:block
+            th:replace="fragments/card :: card(evento=${eventoCard.evento}, imagem=${eventoCard.imagemUrl})"
+          ></th:block>
+        </div>
+      </section>
+    </main>
   </body>
 </html>

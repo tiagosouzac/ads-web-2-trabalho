@@ -15,6 +15,8 @@ public interface EventoRepository extends JpaRepository<Evento, Integer> {
 
     List<Evento> findByCategoria(Categoria categoria);
 
+    List<Evento> findFirst4ByCategoriaAndStatus(Categoria categoria, EventoStatus status);
+
     List<Evento> findByDataInicioBetween(LocalDateTime inicio, LocalDateTime fim);
 
     List<Evento> findByOrganizacao(Organizacao organizacao);

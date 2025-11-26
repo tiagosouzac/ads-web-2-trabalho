@@ -1,0 +1,152 @@
+<a
+  th:fragment="card(evento, imagem)"
+  th:href="@{'/eventos/' + ${evento.id}}"
+  class="group/card"
+>
+  <div class="relative">
+    <img
+      th:if="${imagem}"
+      th:src="${imagem}"
+      alt="Imagem do evento"
+      class="w-full object-cover rounded-t-md aspect-video"
+    />
+
+    <div class="absolute top-4 left-4 flex flex-col items-start gap-2">
+      <th:block
+        th:replace="fragments/badge-categoria :: badgeCategoria(categoria=${evento.categoria})"
+      ></th:block>
+
+      <div
+        th:if="${evento.idadeMinima != null}"
+        class="bg-gray-600 text-white px-2 py-1 rounded-full text-xs font-medium"
+      >
+        <span th:text="${evento.idadeMinima} + '+'"></span>
+      </div>
+
+      <div
+        th:if="${evento.idadeMinima == null}"
+        class="bg-gray-600 text-white px-2 py-1 rounded-full text-xs font-medium"
+      >
+        Livre
+      </div>
+    </div>
+  </div>
+
+  <div
+    class="px-4 py-3 border border-t-0 rounded-b-md group-hover/card:border-neutral-300 transition-colors transition-shadow duration-300 flex flex-col space-y-3 group-hover/card:shadow-lg"
+  >
+    <strong th:text="${evento.nome}" class="text-lg leading-6 mb-1.5"></strong>
+
+    <p
+      class="text-sm text-neutral-500 line-clamp-3"
+      th:text="${evento.descricao}"
+      th:title="${evento.descricao}"
+    ></p>
+
+    <div class="space-y-1 text-neutral-500">
+      <div class="flex gap-2">
+        <svg
+          xmlns="http://www.w3.org/2000/svg"
+          width="24"
+          height="24"
+          viewBox="0 0 24 24"
+          fill="none"
+          stroke="currentColor"
+          stroke-width="2"
+          stroke-linecap="round"
+          stroke-linejoin="round"
+          class="lucide lucide-calendar1-icon lucide-calendar-1 size-4 mt-0.5"
+        >
+          <path d="M11 14h1v4" />
+          <path d="M16 2v4" />
+          <path d="M3 10h18" />
+          <path d="M8 2v4" />
+          <rect x="3" y="4" width="18" height="18" rx="2" />
+        </svg>
+
+        <p class="text-sm">
+          De
+          <time
+            datetime="${evento.dataInicio}"
+            th:text="${#temporals.format(evento.dataInicio, 'dd/MM/yyyy')}"
+          ></time>
+          a
+          <time
+            datetime="${evento.dataFim}"
+            th:text="${#temporals.format(evento.dataFim, 'dd/MM/yyyy')}"
+          >
+          </time>
+        </p>
+      </div>
+
+      <div class="flex items-center gap-2">
+        <svg
+          xmlns="http://www.w3.org/2000/svg"
+          width="24"
+          height="24"
+          viewBox="0 0 24 24"
+          fill="none"
+          stroke="currentColor"
+          stroke-width="2"
+          stroke-linecap="round"
+          stroke-linejoin="round"
+          class="lucide lucide-map-pin-icon lucide-map-pin size-4"
+        >
+          <path
+            d="M20 10c0 4.993-5.539 10.193-7.399 11.799a1 1 0 0 1-1.202 0C9.539 20.193 4 14.993 4 10a8 8 0 0 1 16 0"
+          />
+          <circle cx="12" cy="10" r="3" />
+        </svg>
+
+        <p th:text="${evento.local.nome}"></p>
+      </div>
+
+      <div class="flex items-center gap-2">
+        <svg
+          xmlns="http://www.w3.org/2000/svg"
+          width="24"
+          height="24"
+          viewBox="0 0 24 24"
+          fill="none"
+          stroke="currentColor"
+          stroke-width="2"
+          stroke-linecap="round"
+          stroke-linejoin="round"
+          class="lucide lucide-dollar-sign-icon lucide-dollar-sign size-4"
+        >
+          <line x1="12" y1="1" x2="12" y2="23" />
+          <path d="M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6" />
+        </svg>
+
+        <p
+          th:if="${evento.preco != null}"
+          th:text="'R$ ' + ${#numbers.formatDecimal(evento.preco, 1, 2)}"
+        ></p>
+        <p th:if="${evento.preco == null}">Gratuito</p>
+      </div>
+    </div>
+
+    <div class="flex justify-end">
+      <button
+        class="border px-4 py-2 rounded-md font-medium text-sm text-neutral-600 flex items-center gap-1.5 group-hover/card:border-neutral-300 transition-colors duration-300"
+      >
+        Saiba mais
+        <svg
+          xmlns="http://www.w3.org/2000/svg"
+          width="24"
+          height="24"
+          viewBox="0 0 24 24"
+          fill="none"
+          stroke="currentColor"
+          stroke-width="2"
+          stroke-linecap="round"
+          stroke-linejoin="round"
+          class="lucide lucide-arrow-right-icon lucide-arrow-right size-4 group-hover/card:translate-x-0.5 transition-transform duration-300"
+        >
+          <path d="M5 12h14" />
+          <path d="m12 5 7 7-7 7" />
+        </svg>
+      </button>
+    </div>
+  </div>
+</a>
