@@ -50,6 +50,11 @@ public class Usuario {
     @JoinColumn(name = "avatar_id")
     private Midia avatar;
 
+    @Enumerated(EnumType.STRING)
+    @Column(nullable = false)
+    @Builder.Default
+    private UsuarioRole role = UsuarioRole.USER;
+
     @CreationTimestamp
     @Column(name = "criado_em", nullable = false, updatable = false)
     private LocalDateTime criadoEm;

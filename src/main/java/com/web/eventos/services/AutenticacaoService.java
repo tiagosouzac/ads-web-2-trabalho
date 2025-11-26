@@ -1,5 +1,6 @@
 package com.web.eventos.services;
 
+import java.util.HashSet;
 import java.util.Set;
 
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
@@ -31,7 +32,8 @@ public class AutenticacaoService implements UserDetailsService {
         Usuario usuario = usuarioService.findByEmail(email);
 
         if (usuario != null) {
-            Set<GrantedAuthority> authorities = Set.of(new SimpleGrantedAuthority("ROLE_USER"));
+            Set<GrantedAuthority> authorities = new HashSet<>();
+            authorities.add(new SimpleGrantedAuthority("ROLE_" + usuario.getRole().name()));
 
             return new CustomUserDetails(
                     usuario.getId(),
