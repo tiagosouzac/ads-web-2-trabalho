@@ -11,7 +11,6 @@ import com.web.eventos.entities.Evento;
 import com.web.eventos.entities.EventoStatus;
 import com.web.eventos.entities.Organizacao;
 
-import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.List;
 
@@ -31,11 +30,12 @@ public interface EventoRepository extends JpaRepository<Evento, Integer> {
                         +
                         "AND (:categoria IS NULL OR e.categoria = :categoria) " +
                         "AND (:localId IS NULL OR e.local.id = :localId) " +
-                        "AND (:dataInicio IS NULL OR CAST(e.dataInicio AS date) = :dataInicio)")
+                        "AND (e.dataInicio BETWEEN :dataInicioDia AND :dataFimDia)")
         Page<Evento> buscarComFiltros(
                         @Param("query") String query,
                         @Param("categoria") Categoria categoria,
                         @Param("localId") Integer localId,
-                        @Param("dataInicio") LocalDate dataInicio,
+                        @Param("dataInicioDia") LocalDateTime dataInicioDia,
+                        @Param("dataFimDia") LocalDateTime dataFimDia,
                         Pageable pageable);
 }

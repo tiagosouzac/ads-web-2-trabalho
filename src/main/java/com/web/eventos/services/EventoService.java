@@ -13,6 +13,7 @@ import com.web.eventos.repositories.EventoRepository;
 import com.web.eventos.repositories.MidiaRepository;
 
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -37,7 +38,18 @@ public class EventoService {
 
     public Page<Evento> buscar(String query, Categoria categoria, Integer localId, LocalDate dataInicio,
             Pageable pageable) {
-        return eventoRepository.buscarComFiltros(query, categoria, localId, dataInicio, pageable);
+        LocalDateTime dataInicioDia = null;
+        LocalDateTime dataFimDia = null;
+
+        if (dataInicio != null) {
+            dataInicioDia = dataInicio.atStartOfDay();
+            dataFimDia = dataInicio.atStartOfDay().plusDays(1).minusNanos(1);
+        } else {
+            dataInicioDia = LocalDateTime.of(1900, 1, 1, 0, 0);
+            dataFimDia = LocalDateTime.of(9999, 12, 31, 23, 59, 59, 999999999);
+        }
+
+        return eventoRepository.buscarComFiltros(query, categoria, localId, dataInicioDia, dataFimDia, pageable);
     }
 
     public Evento salvar(Evento evento) {

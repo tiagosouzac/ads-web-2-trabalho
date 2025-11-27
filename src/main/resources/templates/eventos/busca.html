@@ -176,7 +176,10 @@
             ></span>
           </p>
 
-          <p th:if="${#lists.isEmpty(eventosPage.content)}">
+          <p
+            th:if="${#lists.isEmpty(eventosPage.content)}"
+            class="text-neutral-500"
+          >
             Nenhum evento encontrado
           </p>
         </hgroup>

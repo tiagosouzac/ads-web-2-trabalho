@@ -8,6 +8,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import com.web.eventos.entities.Categoria;
 import com.web.eventos.entities.Evento;
 import com.web.eventos.entities.EventoStatus;
+import com.web.eventos.entities.Local;
 import com.web.eventos.entities.Organizacao;
 import com.web.eventos.security.CustomUserDetails;
 import com.web.eventos.services.EventoService;
@@ -75,13 +76,18 @@ public class EventoController {
             Model model) {
         Pageable pageable = PageRequest.of(page, size);
         Page<Evento> eventosPage = eventoService.buscar(query, categoria, localId, dataInicio, pageable);
+        List<Local> locais = localService.findAll();
+        Local localSelecionado = locais.stream()
+                .filter(local -> local.getId().equals(localId))
+                .findFirst()
+                .orElse(null);
 
         model.addAttribute("eventosPage", eventosPage);
-        model.addAttribute("locais", localService.findAll());
+        model.addAttribute("locais", locais);
         model.addAttribute("categorias", Categoria.values());
         model.addAttribute("query", query);
-        model.addAttribute("categoriaSelecionada", categoria);
-        model.addAttribute("localSelecionado", localId);
+        model.addAttribute("categoriaSelecionada", categoria != null ? categoria.getDisplayName() : null);
+        model.addAttribute("localSelecionado", localSelecionado != null ? localSelecionado.getNome() : null);
         model.addAttribute("dataInicioSelecionada", dataInicio);
 
         return "eventos/busca";
