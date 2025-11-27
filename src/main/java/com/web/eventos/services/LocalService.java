@@ -24,6 +24,10 @@ public class LocalService {
         return localRepository.findByOrganizacao(organizacao);
     }
 
+    public List<Local> findAll() {
+        return localRepository.findAll();
+    }
+
     public Local salvar(Local local) {
         return localRepository.save(local);
     }

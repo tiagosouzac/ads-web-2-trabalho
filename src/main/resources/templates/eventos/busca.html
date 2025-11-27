@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+  <th:block
+    th:replace="fragments/head :: head('Buscar eventos | Partiu!')"
+  ></th:block>
+
+  <body>
+    <th:block th:replace="fragments/header :: header"></th:block>
+
+    <main class="container">
+      <section class="space-y-6 my-12" th:if="${not #lists.isEmpty(eventos)}">
+        <hgroup>
+          <h1 class="text-2xl font-semibold">Resultados da busca</h1>
+
+          <p>
+            <span th:text="${#lists.size(eventos)}">0</span>
+            <span
+              th:text="${#lists.size(eventos) == 1 ? 'evento encontrado' : 'eventos encontrados'}"
+            ></span>
+          </p>
+        </hgroup>
+
+        <div class="grid grid-cols-[repeat(auto-fill,minmax(20rem,1fr))] gap-4">
+          <th:block th:each="evento : ${eventos}">
+            <th:block
+              th:replace="fragments/card :: card(evento=${evento})"
+            ></th:block>
+          </th:block>
+        </div>
+      </section>
+
+      <!-- Nenhum resultado encontrado -->
+      <section class="space-y-6 my-12" th:if="${#lists.isEmpty(eventos)}">
+        <hgroup>
+          <h1 class="text-2xl font-semibold">Resultados da busca</h1>
+
+          <p th:if="${not #lists.isEmpty(eventos)}">
+            <span th:text="${#lists.size(eventos)}">0</span>
+            <span
+              th:text="${#lists.size(eventos) == 1 ? 'evento encontrado' : 'eventos encontrados'}"
+            ></span>
+          </p>
+
+          <p th:if="${#lists.isEmpty(eventos)}">Nenhum evento encontrado</p>
+        </hgroup>
+
+        <div
+          th:if="${#lists.isEmpty(eventos)}"
+          class="flex flex-col gap-4 items-center py-16 px-4 border border-dashed rounded-md"
+        >
+          <svg
+            xmlns="http://www.w3.org/2000/svg"
+            width="24"
+            height="24"
+            viewBox="0 0 24 24"
+            fill="none"
+            stroke="currentColor"
+            stroke-width="2"
+            stroke-linecap="round"
+            stroke-linejoin="round"
+            class="lucide lucide-search-icon lucide-search text-neutral-400 size-10"
+          >
+            <path d="m21 21-4.34-4.34" />
+            <circle cx="11" cy="11" r="8" />
+          </svg>
+
+          <p class="text-center text-gray-500 text-balance max-w-80">
+            Nenhum evento encontrado. Tente ajustar os critérios de busca.
+          </p>
+        </div>
+      </section>
+    </main>
+  </body>
+</html>

@@ -17,10 +17,14 @@ import com.web.eventos.services.OrganizacaoService;
 
 import jakarta.validation.Valid;
 
+import java.time.LocalDate;
+import java.util.List;
+
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
-
+import org.springframework.web.bind.WebDataBinder;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.InitBinder;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -44,12 +48,37 @@ public class EventoController {
         this.midiaService = midiaService;
     }
 
+    @InitBinder
+    public void initBinder(WebDataBinder binder) {
+        binder.setDisallowedFields("midias");
+    }
+
     @GetMapping
     @PreAuthorize("isAuthenticated() and principal.tipo == 'ORGANIZACAO'")
     public String listar(@AuthenticationPrincipal CustomUserDetails organizacaoLogada, Model model) {
         Organizacao organizacao = organizacaoService.findById(organizacaoLogada.getId());
         model.addAttribute("eventos", eventoService.findByOrganizacao(organizacao));
         return "eventos/listar";
+    }
+
+    @GetMapping("/buscar")
+    public String buscar(
+            @RequestParam(required = false) String query,
+            @RequestParam(required = false) Categoria categoria,
+            @RequestParam(required = false) Integer localId,
+            @RequestParam(required = false) LocalDate dataInicio,
+            Model model) {
+        List<Evento> eventos = eventoService.buscar(query, categoria, localId, dataInicio);
+
+        model.addAttribute("eventos", eventos);
+        model.addAttribute("locais", localService.findAll());
+        model.addAttribute("categorias", Categoria.values());
+        model.addAttribute("query", query);
+        model.addAttribute("categoriaSelecionada", categoria);
+        model.addAttribute("localSelecionado", localId);
+        model.addAttribute("dataInicioSelecionada", dataInicio);
+
+        return "eventos/busca";
     }
 
     @GetMapping("/cadastrar")

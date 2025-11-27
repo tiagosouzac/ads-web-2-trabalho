@@ -13,6 +13,8 @@ import org.hibernate.annotations.UpdateTimestamp;
 
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
+import java.util.ArrayList;
+import java.util.List;
 
 @Entity
 @Table(name = "evento")
@@ -70,6 +72,10 @@ public class Evento {
     @UpdateTimestamp
     @Column(name = "atualizado_em")
     private LocalDateTime atualizadoEm;
+
+    @OneToMany(mappedBy = "evento", cascade = CascadeType.ALL, orphanRemoval = true)
+    @Builder.Default
+    private List<Midia> midias = new ArrayList<>();
 
     @PrePersist
     protected void onCreate() {

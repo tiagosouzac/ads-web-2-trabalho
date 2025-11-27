@@ -1,14 +1,14 @@
 <a
-  th:fragment="card(evento, imagem)"
+  th:fragment="card(evento)"
   th:href="@{'/eventos/' + ${evento.id}}"
   class="group/card"
 >
   <div class="relative">
     <img
-      th:if="${imagem}"
-      th:src="${imagem}"
+      th:if="${evento.midias != null and !evento.midias.isEmpty()}"
+      th:src="${evento.midias[0].url}"
       alt="Imagem do evento"
-      class="w-full object-cover rounded-t-md aspect-video"
+      class="w-full object-cover rounded-t-lg aspect-video"
     />
 
     <div class="absolute top-4 left-4 flex flex-col items-start gap-2">
@@ -33,7 +33,7 @@
   </div>
 
   <div
-    class="px-4 py-3 border border-t-0 rounded-b-md group-hover/card:border-neutral-300 transition-colors transition-shadow duration-300 flex flex-col space-y-3 group-hover/card:shadow-lg"
+    class="px-4 py-3 border border-t-0 rounded-b-lg group-hover/card:border-neutral-300 transition-colors transition-shadow duration-300 flex flex-col space-y-3 group-hover/card:shadow-lg"
   >
     <strong th:text="${evento.nome}" class="text-lg leading-6 mb-1.5"></strong>
 

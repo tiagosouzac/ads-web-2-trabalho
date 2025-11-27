@@ -15,16 +15,15 @@
         data-interval="5000"
       >
         <div data-slides>
-          <div th:each="banner : ${banners}">
-            <img
-              th:src="${banner.url}"
-              th:alt="${banner.titulo}"
-              class="w-full h-120 aspect-video object-cover"
-            />
-          </div>
+          <img
+            th:each="banner : ${banners}"
+            th:src="${banner.url}"
+            th:alt="${banner.titulo}"
+            class="w-full h-120 aspect-video object-cover"
+          />
         </div>
 
-        <div class="buttons container">
+        <div class="buttons container" th:if="${#lists.size(banners) > 1}">
           <button data-prev-slide aria-label="Anterior">
             <svg
               xmlns="http://www.w3.org/2000/svg"
@@ -60,7 +59,7 @@
 
       <section
         th:each="categoria : ${eventosPorCategoria}"
-        class="space-y-6 mt-12 container"
+        class="space-y-6 my-12 container"
       >
         <div class="flex justify-between items-center gap-4">
           <h2
@@ -77,13 +76,12 @@
           </a>
         </div>
 
-        <div
-          th:each="eventoCard : ${categoria.value}"
-          class="grid grid-cols-[repeat(auto-fill,minmax(20rem,1fr))] gap-4"
-        >
-          <th:block
-            th:replace="fragments/card :: card(evento=${eventoCard.evento}, imagem=${eventoCard.imagemUrl})"
-          ></th:block>
+        <div class="grid grid-cols-[repeat(auto-fill,minmax(20rem,1fr))] gap-4">
+          <th:block th:each="evento : ${categoria.value}">
+            <th:block
+              th:replace="fragments/card :: card(evento=${evento})"
+            ></th:block>
+          </th:block>
         </div>
       </section>
     </main>
