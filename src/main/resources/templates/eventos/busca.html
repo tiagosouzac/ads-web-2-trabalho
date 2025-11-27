@@ -8,44 +8,181 @@
     <th:block th:replace="fragments/header :: header"></th:block>
 
     <main class="container">
-      <section class="space-y-6 my-12" th:if="${not #lists.isEmpty(eventos)}">
+      <section
+        class="space-y-6 my-12"
+        th:if="${not #lists.isEmpty(eventosPage.content)}"
+      >
         <hgroup>
           <h1 class="text-2xl font-semibold">Resultados da busca</h1>
 
-          <p>
-            <span th:text="${#lists.size(eventos)}">0</span>
+          <p class="text-neutral-500">
+            <span th:text="${#lists.size(eventosPage.content)}">0</span>
             <span
-              th:text="${#lists.size(eventos) == 1 ? 'evento encontrado' : 'eventos encontrados'}"
+              th:text="${#lists.size(eventosPage.content) == 1 ? 'evento encontrado' : 'eventos encontrados'}"
             ></span>
           </p>
         </hgroup>
 
         <div class="grid grid-cols-[repeat(auto-fill,minmax(20rem,1fr))] gap-4">
-          <th:block th:each="evento : ${eventos}">
+          <th:block th:each="evento : ${eventosPage.content}">
             <th:block
               th:replace="fragments/card :: card(evento=${evento})"
             ></th:block>
           </th:block>
         </div>
+
+        <!-- Paginação -->
+        <div class="flex justify-between items-center gap-4">
+          <form th:action="@{/eventos/buscar}" method="get">
+            <input type="hidden" name="query" th:value="${query}" />
+            <input
+              type="hidden"
+              name="categoria"
+              th:value="${categoriaSelecionada}"
+            />
+            <input
+              type="hidden"
+              name="localId"
+              th:value="${localSelecionado}"
+            />
+            <input
+              type="hidden"
+              name="dataInicio"
+              th:value="${dataInicioSelecionada}"
+            />
+            <input type="hidden" name="page" th:value="${eventosPage.number}" />
+
+            <div class="flex items-center gap-3">
+              <label for="size" class="text-sm font-medium">
+                Itens por página:
+              </label>
+
+              <div class="relative">
+                <select
+                  name="size"
+                  id="size"
+                  onchange="this.form.submit()"
+                  class="w-16 h-8 px-2 border border-gray-300 rounded appearance-none text-sm"
+                >
+                  <option th:value="12" th:selected="${eventosPage.size == 12}">
+                    12
+                  </option>
+                  <option th:value="24" th:selected="${eventosPage.size == 24}">
+                    24
+                  </option>
+                  <option th:value="36" th:selected="${eventosPage.size == 36}">
+                    36
+                  </option>
+                  <option th:value="48" th:selected="${eventosPage.size == 48}">
+                    48
+                  </option>
+                </select>
+
+                <svg
+                  xmlns="http://www.w3.org/2000/svg"
+                  width="24"
+                  height="24"
+                  viewBox="0 0 24 24"
+                  fill="none"
+                  stroke="currentColor"
+                  stroke-width="2"
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                  class="lucide lucide-chevron-down-icon lucide-chevron-down size-4 absolute top-1/2 right-2 -translate-y-1/2 pointer-events-none"
+                >
+                  <path d="m6 9 6 6 6-6" />
+                </svg>
+              </div>
+            </div>
+          </form>
+
+          <nav>
+            <ul class="flex gap-2">
+              <li>
+                <a
+                  th:href="${eventosPage.hasPrevious()} ? @{/eventos/buscar(query=${query}, categoria=${categoriaSelecionada}, localId=${localSelecionado}, dataInicio=${dataInicioSelecionada}, page=${eventosPage.number - 1}, size=${eventosPage.size})} : '#'"
+                  th:classappend="${!eventosPage.hasPrevious()} ? 'text-gray-400 cursor-not-allowed' : 'text-neutral-600 hover:bg-neutral-100'"
+                  class="rounded flex justify-center items-center size-8"
+                >
+                  <svg
+                    xmlns="http://www.w3.org/2000/svg"
+                    width="24"
+                    height="24"
+                    viewBox="0 0 24 24"
+                    fill="none"
+                    stroke="currentColor"
+                    stroke-width="2"
+                    stroke-linecap="round"
+                    stroke-linejoin="round"
+                    class="lucide lucide-chevron-left-icon lucide-chevron-left size-4"
+                  >
+                    <path d="m15 18-6-6 6-6" />
+                  </svg>
+                  <span class="sr-only">Anterior</span>
+                </a>
+              </li>
+
+              <li
+                th:each="i : ${#numbers.sequence(0, eventosPage.totalPages - 1)}"
+              >
+                <a
+                  th:href="@{/eventos/buscar(query=${query}, categoria=${categoriaSelecionada}, localId=${localSelecionado}, dataInicio=${dataInicioSelecionada}, page=${i}, size=${eventosPage.size})}"
+                  th:classappend="${i == eventosPage.number} ? 'bg-blue-500 text-white hover:bg-blue-600' : 'hover:bg-neutral-100'"
+                  class="size-8 flex justify-center items-center rounded text-sm"
+                  th:text="${i + 1}"
+                ></a>
+              </li>
+
+              <li>
+                <a
+                  th:href="${eventosPage.hasNext()} ? @{/eventos/buscar(query=${query}, categoria=${categoriaSelecionada}, localId=${localSelecionado}, dataInicio=${dataInicioSelecionada}, page=${eventosPage.number + 1}, size=${eventosPage.size})} : '#'"
+                  th:classappend="${!eventosPage.hasNext()} ? 'text-neutral-400 cursor-not-allowed' : 'text-neutral-600 hover:bg-neutral-100'"
+                  class="rounded flex justify-center items-center size-8"
+                >
+                  <svg
+                    xmlns="http://www.w3.org/2000/svg"
+                    width="24"
+                    height="24"
+                    viewBox="0 0 24 24"
+                    fill="none"
+                    stroke="currentColor"
+                    stroke-width="2"
+                    stroke-linecap="round"
+                    stroke-linejoin="round"
+                    class="lucide lucide-chevron-right-icon lucide-chevron-right size-4"
+                  >
+                    <path d="m9 18 6-6-6-6" />
+                  </svg>
+                  <span class="sr-only">Próximo</span>
+                </a>
+              </li>
+            </ul>
+          </nav>
+        </div>
       </section>
 
       <!-- Nenhum resultado encontrado -->
-      <section class="space-y-6 my-12" th:if="${#lists.isEmpty(eventos)}">
+      <section
+        class="space-y-6 my-12"
+        th:if="${#lists.isEmpty(eventosPage.content)}"
+      >
         <hgroup>
           <h1 class="text-2xl font-semibold">Resultados da busca</h1>
 
-          <p th:if="${not #lists.isEmpty(eventos)}">
-            <span th:text="${#lists.size(eventos)}">0</span>
+          <p th:if="${not #lists.isEmpty(eventosPage.content)}">
+            <span th:text="${#lists.size(eventosPage.content)}">0</span>
             <span
-              th:text="${#lists.size(eventos) == 1 ? 'evento encontrado' : 'eventos encontrados'}"
+              th:text="${#lists.size(eventosPage.content) == 1 ? 'evento encontrado' : 'eventos encontrados'}"
             ></span>
           </p>
 
-          <p th:if="${#lists.isEmpty(eventos)}">Nenhum evento encontrado</p>
+          <p th:if="${#lists.isEmpty(eventosPage.content)}">
+            Nenhum evento encontrado
+          </p>
         </hgroup>
 
         <div
-          th:if="${#lists.isEmpty(eventos)}"
+          th:if="${#lists.isEmpty(eventosPage.content)}"
           class="flex flex-col gap-4 items-center py-16 px-4 border border-dashed rounded-md"
         >
           <svg

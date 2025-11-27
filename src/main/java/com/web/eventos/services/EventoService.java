@@ -1,5 +1,7 @@
 package com.web.eventos.services;
 
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import com.web.eventos.entities.Categoria;
@@ -33,8 +35,9 @@ public class EventoService {
         return eventoRepository.findByOrganizacao(organizacao);
     }
 
-    public List<Evento> buscar(String query, Categoria categoria, Integer localId, LocalDate dataInicio) {
-        return eventoRepository.buscarComFiltros(query, categoria, localId, dataInicio);
+    public Page<Evento> buscar(String query, Categoria categoria, Integer localId, LocalDate dataInicio,
+            Pageable pageable) {
+        return eventoRepository.buscarComFiltros(query, categoria, localId, dataInicio, pageable);
     }
 
     public Evento salvar(Evento evento) {

@@ -1,5 +1,7 @@
 package com.web.eventos.repositories;
 
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
@@ -30,9 +32,10 @@ public interface EventoRepository extends JpaRepository<Evento, Integer> {
                         "AND (:categoria IS NULL OR e.categoria = :categoria) " +
                         "AND (:localId IS NULL OR e.local.id = :localId) " +
                         "AND (:dataInicio IS NULL OR CAST(e.dataInicio AS date) = :dataInicio)")
-        List<Evento> buscarComFiltros(
+        Page<Evento> buscarComFiltros(
                         @Param("query") String query,
                         @Param("categoria") Categoria categoria,
                         @Param("localId") Integer localId,
-                        @Param("dataInicio") LocalDate dataInicio);
+                        @Param("dataInicio") LocalDate dataInicio,
+                        Pageable pageable);
 }

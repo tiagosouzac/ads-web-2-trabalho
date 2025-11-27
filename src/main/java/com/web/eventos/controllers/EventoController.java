@@ -20,6 +20,9 @@ import jakarta.validation.Valid;
 import java.time.LocalDate;
 import java.util.List;
 
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.WebDataBinder;
@@ -67,10 +70,13 @@ public class EventoController {
             @RequestParam(required = false) Categoria categoria,
             @RequestParam(required = false) Integer localId,
             @RequestParam(required = false) LocalDate dataInicio,
+            @RequestParam(defaultValue = "0") int page,
+            @RequestParam(defaultValue = "12") int size,
             Model model) {
-        List<Evento> eventos = eventoService.buscar(query, categoria, localId, dataInicio);
+        Pageable pageable = PageRequest.of(page, size);
+        Page<Evento> eventosPage = eventoService.buscar(query, categoria, localId, dataInicio, pageable);
 
-        model.addAttribute("eventos", eventos);
+        model.addAttribute("eventosPage", eventosPage);
         model.addAttribute("locais", localService.findAll());
         model.addAttribute("categorias", Categoria.values());
         model.addAttribute("query", query);
