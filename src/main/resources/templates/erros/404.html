@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+  <th:block
+    th:replace="fragments/head :: head('Página não encontrada | Partiu!')"
+  ></th:block>
+
+  <body>
+    <th:block th:replace="fragments/header :: header"></th:block>
+
+    <main class="max-w-96 mx-auto space-y-6 py-12 flex flex-col items-center">
+      <hgroup class="space-y-3">
+        <h1 class="text-center font-semibold text-2xl">
+          Página não encontrada
+        </h1>
+
+        <p class="text-neutral-500 text-center text-balance">
+          A página que você está procurando não existe.
+        </p>
+      </hgroup>
+
+      <a
+        th:href="@{/}"
+        class="text-blue-500 underline hover:text-blue-600 text-center"
+      >
+        Voltar para a página inicial
+      </a>
+    </main>
+  </body>
+</html>

@@ -12,4 +12,9 @@ public class ErroController {
     public String acessoNegado() {
         return "erros/acesso-negado";
     }
+
+    @GetMapping("/404")
+    public String paginaNaoEncontrada() {
+        return "erros/404";
+    }
 }

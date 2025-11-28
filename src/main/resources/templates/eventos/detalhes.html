@@ -1,0 +1,232 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+  <th:block
+    th:replace="fragments/head :: head('Buscar eventos | Partiu!')"
+  ></th:block>
+
+  <body>
+    <th:block th:replace="fragments/header :: header"></th:block>
+
+    <main class="container">
+      <section class="my-12 grid grid-cols-9 gap-12">
+        <div
+          class="col-span-5 relative"
+          data-slider
+          data-infinite
+          data-interval="5000"
+          th:if="${evento.midias != null and !evento.midias.isEmpty()}"
+        >
+          <div class="sticky top-8 h-max">
+            <div class="rounded-lg overflow-hidden" data-slides>
+              <img
+                th:each="midia : ${evento.midias}"
+                th:src="${midia.url}"
+                th:alt="${evento.nome}"
+                class="w-full h-full aspect-square object-cover rounded-lg"
+              />
+            </div>
+
+            <div class="buttons container" th:if="${evento.midias.size() > 1}">
+              <button data-prev-slide aria-label="Anterior">
+                <svg
+                  xmlns="http://www.w3.org/2000/svg"
+                  width="24"
+                  height="24"
+                  viewBox="0 0 24 24"
+                  fill="none"
+                  stroke="currentColor"
+                  stroke-width="2"
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                >
+                  <polyline points="15 18 9 12 15 6"></polyline>
+                </svg>
+              </button>
+              <button data-next-slide aria-label="Próximo">
+                <svg
+                  xmlns="http://www.w3.org/2000/svg"
+                  width="24"
+                  height="24"
+                  viewBox="0 0 24 24"
+                  fill="none"
+                  stroke="currentColor"
+                  stroke-width="2"
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                >
+                  <polyline points="9 18 15 12 9 6"></polyline>
+                </svg>
+              </button>
+            </div>
+          </div>
+        </div>
+
+        <div class="col-span-4">
+          <th:block
+            th:replace="fragments/badge-categoria :: badgeCategoria(categoria=${evento.categoria})"
+          ></th:block>
+
+          <h1
+            class="font-semibold text-2xl mb-4 mt-6"
+            th:text="${evento.nome}"
+          ></h1>
+
+          <p class="text-neutral-500 mb-8" th:text="${evento.descricao}"></p>
+
+          <div class="space-y-2.5">
+            <div class="flex items-center gap-2">
+              <svg
+                xmlns="http://www.w3.org/2000/svg"
+                fill="none"
+                viewBox="0 0 24 24"
+                stroke-width="1.5"
+                stroke="currentColor"
+                class="size-6 text-neutral-400"
+              >
+                <path
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                  d="M6.75 2.994v2.25m10.5-2.25v2.25m-14.252 13.5V7.491a2.25 2.25 0 0 1 2.25-2.25h13.5a2.25 2.25 0 0 1 2.25 2.25v11.251m-18 0a2.25 2.25 0 0 0 2.25 2.25h13.5a2.25 2.25 0 0 0 2.25-2.25m-18 0v-7.5a2.25 2.25 0 0 1 2.25-2.25h13.5a2.25 2.25 0 0 1 2.25 2.25v7.5m-6.75-6h2.25m-9 2.25h4.5m.002-2.25h.005v.006H12v-.006Zm-.001 4.5h.006v.006h-.006v-.005Zm-2.25.001h.005v.006H9.75v-.006Zm-2.25 0h.005v.005h-.006v-.005Zm6.75-2.247h.005v.005h-.005v-.005Zm0 2.247h.006v.006h-.006v-.006Zm2.25-2.248h.006V15H16.5v-.005Z"
+                />
+              </svg>
+
+              <time
+                class="text-neutral-500"
+                datetime="${evento.dataInicio}"
+                th:text="${#temporals.format(evento.dataInicio, 'dd/MM/yyyy HH:mm') + ' a ' + #temporals.format(evento.dataFim, 'dd/MM/yyyy HH:mm')}"
+              >
+              </time>
+            </div>
+
+            <div class="flex items-center gap-2">
+              <svg
+                xmlns="http://www.w3.org/2000/svg"
+                fill="none"
+                viewBox="0 0 24 24"
+                stroke-width="1.5"
+                stroke="currentColor"
+                class="size-6 text-neutral-400"
+              >
+                <path
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                  d="M15 10.5a3 3 0 1 1-6 0 3 3 0 0 1 6 0Z"
+                />
+                <path
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                  d="M19.5 10.5c0 7.142-7.5 11.25-7.5 11.25S4.5 17.642 4.5 10.5a7.5 7.5 0 1 1 15 0Z"
+                />
+              </svg>
+
+              <address
+                class="text-neutral-500 not-italic"
+                th:text="${evento.local.nome}"
+              ></address>
+            </div>
+
+            <div class="flex items-center gap-2">
+              <svg
+                xmlns="http://www.w3.org/2000/svg"
+                width="24"
+                height="24"
+                viewBox="0 0 24 24"
+                fill="none"
+                stroke="currentColor"
+                stroke-width="1.5"
+                stroke-linecap="round"
+                stroke-linejoin="round"
+                class="lucide lucide-dollar-sign-icon lucide-dollar-sign size-6 text-neutral-400"
+              >
+                <line x1="12" y1="1" x2="12" y2="23" />
+                <path d="M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6" />
+              </svg>
+
+              <p
+                class="text-neutral-500"
+                th:if="${evento.preco != null}"
+                th:text="'R$ ' + ${#numbers.formatDecimal(evento.preco, 1, 2)}"
+              ></p>
+              <p class="text-neutral-400" th:if="${evento.preco == null}">
+                Gratuito
+              </p>
+            </div>
+
+            <div class="flex items-center gap-2">
+              <svg
+                xmlns="http://www.w3.org/2000/svg"
+                width="24"
+                height="24"
+                viewBox="0 0 24 24"
+                fill="none"
+                stroke="currentColor"
+                stroke-width="2"
+                stroke-linecap="round"
+                stroke-linejoin="round"
+                class="lucide lucide-person-standing-icon lucide-person-standing size-6 text-neutral-400"
+              >
+                <circle cx="12" cy="5" r="1" />
+                <path d="m9 20 3-6 3 6" />
+                <path d="m6 8 6 2 6-2" />
+                <path d="M12 10v4" />
+              </svg>
+
+              <p
+                class="text-neutral-500"
+                th:text="${evento.idadeMinima != null ? 'Para maiores de ' + evento.idadeMinima + ' anos' : 'Livre para todas as idades'}"
+              ></p>
+            </div>
+
+            <!-- <div class="flex items-center gap-2">
+              <svg
+                xmlns="http://www.w3.org/2000/svg"
+                fill="none"
+                viewBox="0 0 24 24"
+                stroke-width="1.5"
+                stroke="currentColor"
+                class="size-6 text-neutral-400"
+              >
+                <path
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                  d="M15 19.128a9.38 9.38 0 0 0 2.625.372 9.337 9.337 0 0 0 4.121-.952 4.125 4.125 0 0 0-7.533-2.493M15 19.128v-.003c0-1.113-.285-2.16-.786-3.07M15 19.128v.106A12.318 12.318 0 0 1 8.624 21c-2.331 0-4.512-.645-6.374-1.766l-.001-.109a6.375 6.375 0 0 1 11.964-3.07M12 6.375a3.375 3.375 0 1 1-6.75 0 3.375 3.375 0 0 1 6.75 0Zm8.25 2.25a2.625 2.625 0 1 1-5.25 0 2.625 2.625 0 0 1 5.25 0Z"
+                />
+              </svg>
+
+              <span class="text-neutral-500">250 interessados</span>
+            </div> -->
+          </div>
+
+          <div class="flex gap-1.5 mt-12">
+            <button
+              class="w-48 px-6 py-2.5 bg-blue-500 text-white rounded-md flex justify-center items-center gap-1.5 font-medium hover:bg-blue-600 transition-colors"
+            >
+              Eu vou
+            </button>
+
+            <button
+              class="w-48 border rounded-md px-6 py-2.5 flex items-center justify-center gap-2 font-medium hover:bg-neutral-100 transition-colors"
+            >
+              <svg
+                xmlns="http://www.w3.org/2000/svg"
+                fill="none"
+                viewBox="0 0 24 24"
+                stroke-width="1.5"
+                stroke="currentColor"
+                class="size-5 text-neutral-600 shrink-0"
+              >
+                <path
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                  d="M7.217 10.907a2.25 2.25 0 1 0 0 2.186m0-2.186c.18.324.283.696.283 1.093s-.103.77-.283 1.093m0-2.186 9.566-5.314m-9.566 7.5 9.566 5.314m0 0a2.25 2.25 0 1 0 3.935 2.186 2.25 2.25 0 0 0-3.935-2.186Zm0-12.814a2.25 2.25 0 1 0 3.933-2.185 2.25 2.25 0 0 0-3.933 2.185Z"
+                />
+              </svg>
+
+              Compartilhar
+            </button>
+          </div>
+        </div>
+      </section>
+    </main>
+  </body>
+</html>

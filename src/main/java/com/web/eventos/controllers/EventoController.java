@@ -93,6 +93,18 @@ public class EventoController {
         return "eventos/busca";
     }
 
+    @GetMapping("/{id}")
+    public String detalhes(@PathVariable Integer id, Model model) {
+        Evento evento = eventoService.findById(id);
+
+        if (evento == null) {
+            return "redirect:/erros/404";
+        }
+
+        model.addAttribute("evento", evento);
+        return "eventos/detalhes";
+    }
+
     @GetMapping("/cadastrar")
     @PreAuthorize("isAuthenticated() and principal.tipo == 'ORGANIZACAO'")
     public String cadastrar(@AuthenticationPrincipal CustomUserDetails organizacaoLogada, Model model) {
