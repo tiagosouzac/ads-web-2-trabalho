@@ -1,5 +1,6 @@
 package com.web.eventos.services;
 
+import org.springframework.cache.annotation.CacheEvict;
 import org.springframework.stereotype.Service;
 
 import com.web.eventos.entities.Local;
@@ -28,10 +29,12 @@ public class LocalService {
         return localRepository.findAll();
     }
 
+    @CacheEvict(value = "locais", allEntries = true)
     public Local salvar(Local local) {
         return localRepository.save(local);
     }
 
+    @CacheEvict(value = "locais", allEntries = true)
     public Local atualizar(Local local) {
         Local existing = localRepository.findById(local.getId())
                 .orElseThrow(() -> new IllegalArgumentException("Local não encontrado"));
@@ -47,6 +50,7 @@ public class LocalService {
         return localRepository.save(existing);
     }
 
+    @CacheEvict(value = "locais", allEntries = true)
     public void excluir(Integer id) {
         localRepository.deleteById(id);
     }
