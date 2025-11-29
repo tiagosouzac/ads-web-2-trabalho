@@ -11,11 +11,14 @@ import com.web.eventos.entities.EventoStatus;
 import com.web.eventos.entities.Local;
 import com.web.eventos.entities.Organizacao;
 import com.web.eventos.security.CustomUserDetails;
+import com.web.eventos.services.AutenticacaoService;
 import com.web.eventos.services.EventoService;
 import com.web.eventos.services.LocalService;
 import com.web.eventos.services.MidiaService;
 import com.web.eventos.services.OrganizacaoService;
+import com.web.eventos.services.InteressadoService;
 
+import jakarta.servlet.http.HttpServletRequest;
 import jakarta.validation.Valid;
 
 import java.time.LocalDate;
@@ -43,13 +46,18 @@ public class EventoController {
     private final OrganizacaoService organizacaoService;
     private final LocalService localService;
     private final MidiaService midiaService;
+    private final InteressadoService interessadoService;
+    private final AutenticacaoService autenticacaoService;
 
     public EventoController(EventoService eventoService, OrganizacaoService organizacaoService,
-            LocalService localService, MidiaService midiaService) {
+            LocalService localService, MidiaService midiaService, InteressadoService interessadoService,
+            AutenticacaoService autenticacaoService) {
         this.eventoService = eventoService;
         this.organizacaoService = organizacaoService;
         this.localService = localService;
         this.midiaService = midiaService;
+        this.interessadoService = interessadoService;
+        this.autenticacaoService = autenticacaoService;
     }
 
     @InitBinder
@@ -94,7 +102,9 @@ public class EventoController {
     }
 
     @GetMapping("/{id}")
-    public String detalhes(@PathVariable Integer id, Model model) {
+    public String detalhes(@PathVariable Integer id, Model model, HttpServletRequest request) {
+        request.getSession(true);
+
         Evento evento = eventoService.findById(id);
 
         if (evento == null) {
@@ -102,6 +112,20 @@ public class EventoController {
         }
 
         model.addAttribute("evento", evento);
+
+        CustomUserDetails user = autenticacaoService.getUsuarioAutenticado();
+
+        Long interessadosCount = interessadoService.countInteressadosByEventoId(evento.getId());
+        model.addAttribute("interessadosCount", interessadosCount);
+
+        if (user != null && "USUARIO".equals(user.getTipo())) {
+            boolean isInteressado = interessadoService.isInteressado(user.getId(),
+                    evento.getId());
+            model.addAttribute("isInteressado", isInteressado);
+        } else {
+            model.addAttribute("isInteressado", false);
+        }
+
         return "eventos/detalhes";
     }
 

@@ -4,10 +4,10 @@ import org.springframework.data.jpa.repository.JpaRepository;
 
 import com.web.eventos.entities.Interessado;
 
-import java.util.List;
+import java.util.Optional;
 
 public interface InteressadoRepository extends JpaRepository<Interessado, Integer> {
     Long countByEventoId(Integer eventoId);
 
-    List<Interessado> findByUsuarioId(Integer usuarioId);
+    Optional<Interessado> findByUsuarioIdAndEventoId(Integer usuarioId, Integer eventoId);
 }

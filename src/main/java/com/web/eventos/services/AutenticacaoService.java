@@ -71,4 +71,14 @@ public class AutenticacaoService implements UserDetailsService {
 
         SecurityContextHolder.getContext().setAuthentication(authenticacao);
     }
+
+    public CustomUserDetails getUsuarioAutenticado() {
+        Authentication autenticacao = SecurityContextHolder.getContext().getAuthentication();
+
+        if (autenticacao != null && autenticacao.getPrincipal() instanceof CustomUserDetails) {
+            return (CustomUserDetails) autenticacao.getPrincipal();
+        }
+
+        return null;
+    }
 }
