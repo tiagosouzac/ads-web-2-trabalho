@@ -36,7 +36,7 @@ public class EventoService {
         return eventoRepository.findByOrganizacao(organizacao);
     }
 
-    public Page<Evento> buscar(String query, Categoria categoria, Integer localId, LocalDate dataInicio,
+    public Page<Evento> buscar(String query, Categoria categoria, String cidade, LocalDate dataInicio,
             Pageable pageable) {
         LocalDateTime dataInicioDia = null;
         LocalDateTime dataFimDia = null;
@@ -49,7 +49,7 @@ public class EventoService {
             dataFimDia = LocalDateTime.of(9999, 12, 31, 23, 59, 59, 999999999);
         }
 
-        return eventoRepository.buscarComFiltros(query, categoria, localId, dataInicioDia, dataFimDia, pageable);
+        return eventoRepository.buscarComFiltros(query, categoria, cidade, dataInicioDia, dataFimDia, pageable);
     }
 
     public Evento salvar(Evento evento) {

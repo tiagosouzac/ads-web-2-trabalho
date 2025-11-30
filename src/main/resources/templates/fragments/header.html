@@ -17,7 +17,7 @@
         />
 
         <input type="hidden" name="categoria" th:value="${param.categoria}" />
-        <input type="hidden" name="localId" th:value="${param.localId}" />
+        <input type="hidden" name="cidade" th:value="${param.cidade}" />
         <input type="hidden" name="dataInicio" th:value="${param.dataInicio}" />
         <input type="hidden" name="size" th:value="${param.size}" />
 
@@ -76,7 +76,7 @@
           >
             <a
               class="px-3 py-2 text-sm hover:bg-neutral-100 flex items-center gap-2"
-              th:href="@{/eventos/buscar(categoria='',localId=${param.localId},size=${param.size},dataInicio=${param.dataInicio},query=${param.query})}"
+              th:href="@{/eventos/buscar(categoria='',cidade=${param.cidade},size=${param.size},dataInicio=${param.dataInicio},query=${param.query})}"
             >
               Todas as categorias
             </a>
@@ -84,7 +84,7 @@
             <div th:each="cat : ${categorias}">
               <a
                 class="px-3 py-2 text-sm hover:bg-neutral-100 flex items-center gap-2"
-                th:href="@{/eventos/buscar(categoria=${cat},localId=${param.localId},size=${param.size},dataInicio=${param.dataInicio},query=${param.query})}"
+                th:href="@{/eventos/buscar(categoria=${cat},cidade=${param.cidade},size=${param.size},dataInicio=${param.dataInicio},query=${param.query})}"
                 th:text="${cat.displayName}"
               ></a>
             </div>
@@ -92,14 +92,14 @@
         </div>
       </div>
 
-      <div class="relative group/locais">
+      <div class="relative group/cidades">
         <button
           class="h-9 px-3 text-sm rounded-md border bg-white focus:outline-none focus:ring-2 focus:ring-blue-600 flex items-center gap-2 min-w-32 justify-between hover:bg-gray-50"
         >
           <span
-            th:text="${localSelecionado != null ? localSelecionado : 'Locais'}"
+            th:text="${cidadeSelecionada != null ? cidadeSelecionada : 'Cidades'}"
           >
-            Locais
+            Cidades
           </span>
 
           <svg
@@ -108,7 +108,7 @@
             viewBox="0 0 24 24"
             stroke-width="2"
             stroke="currentColor"
-            class="size-4 transition-transform text-gray-400 group-focus-within/locais:rotate-180"
+            class="size-4 transition-transform text-gray-400 group-focus-within/cidades:rotate-180"
           >
             <path
               stroke-linecap="round"
@@ -119,23 +119,23 @@
         </button>
 
         <div
-          class="absolute top-full left-0 pt-1 group-focus-within/locais:block hidden z-10"
+          class="absolute top-full left-0 pt-1 group-focus-within/cidades:block hidden z-10"
         >
           <div
             class="bg-white border rounded-md shadow-lg w-48 flex flex-col max-h-80 overflow-y-auto"
           >
             <a
               class="px-3 py-2 text-sm hover:bg-neutral-100 flex items-center gap-2"
-              th:href="@{/eventos/buscar(categoria=${param.categoria},localId='',size=${param.size},dataInicio=${param.dataInicio},query=${param.query})}"
+              th:href="@{/eventos/buscar(categoria=${param.categoria},cidade='',size=${param.size},dataInicio=${param.dataInicio},query=${param.query})}"
             >
-              Todas os locais
+              Todas as cidades
             </a>
 
-            <div th:each="local : ${locais}">
+            <div th:each="cidade : ${cidades}">
               <a
                 class="px-3 py-2 text-sm hover:bg-neutral-100 flex items-center gap-2"
-                th:href="@{/eventos/buscar(categoria=${param.categoria},localId=${local.id},size=${param.size},dataInicio=${param.dataInicio},query=${param.query})}"
-                th:text="${local.nome}"
+                th:href="@{/eventos/buscar(categoria=${param.categoria},cidade=${cidade},size=${param.size},dataInicio=${param.dataInicio},query=${param.query})}"
+                th:text="${cidade}"
               ></a>
             </div>
           </div>
@@ -169,7 +169,15 @@
           <div
             class="bg-white border rounded-md shadow-lg w-48 flex flex-col max-h-80 overflow-y-auto"
           >
-            <form class="px-3 py-2">
+            <form class="px-3 py-2" th:action="@{/eventos/buscar}" method="GET">
+              <input type="hidden" name="query" th:value="${param.query}" />
+              <input
+                type="hidden"
+                name="categoria"
+                th:value="${param.categoria}"
+              />
+              <input type="hidden" name="cidade" th:value="${param.cidade}" />
+              <input type="hidden" name="size" th:value="${param.size}" />
               <label
                 for="date-input"
                 class="block text-xs font-medium text-gray-700 mb-1"

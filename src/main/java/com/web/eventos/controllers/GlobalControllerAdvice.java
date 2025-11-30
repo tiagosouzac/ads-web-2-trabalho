@@ -5,7 +5,6 @@ import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ModelAttribute;
 
 import com.web.eventos.entities.Categoria;
-import com.web.eventos.entities.Local;
 import com.web.eventos.services.LocalService;
 
 import jakarta.servlet.http.HttpServletRequest;
@@ -29,10 +28,10 @@ public class GlobalControllerAdvice {
         return Arrays.asList(Categoria.values());
     }
 
-    @ModelAttribute("locais")
-    @Cacheable("locais")
-    public List<Local> obterLocais(HttpServletRequest request) {
+    @ModelAttribute("cidades")
+    @Cacheable("cidades")
+    public List<String> obterCidades(HttpServletRequest request) {
         request.getSession(true);
-        return localService.findAll();
+        return localService.findDistinctCidade();
     }
 }

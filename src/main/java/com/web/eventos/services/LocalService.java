@@ -29,6 +29,10 @@ public class LocalService {
         return localRepository.findAll();
     }
 
+    public List<String> findDistinctCidade() {
+        return localRepository.findDistinctCidade();
+    }
+
     @CacheEvict(value = "locais", allEntries = true)
     public Local salvar(Local local) {
         return localRepository.save(local);

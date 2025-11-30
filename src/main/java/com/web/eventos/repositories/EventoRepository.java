@@ -29,12 +29,12 @@ public interface EventoRepository extends JpaRepository<Evento, Integer> {
                         "AND (COALESCE(:query, '') = '' OR LOWER(e.nome) LIKE LOWER(CONCAT('%', :query, '%')) OR LOWER(COALESCE(e.descricao, '')) LIKE LOWER(CONCAT('%', :query, '%'))) "
                         +
                         "AND (:categoria IS NULL OR e.categoria = :categoria) " +
-                        "AND (:localId IS NULL OR e.local.id = :localId) " +
+                        "AND (:cidade IS NULL OR e.local.cidade = :cidade) " +
                         "AND (e.dataInicio BETWEEN :dataInicioDia AND :dataFimDia)")
         Page<Evento> buscarComFiltros(
                         @Param("query") String query,
                         @Param("categoria") Categoria categoria,
-                        @Param("localId") Integer localId,
+                        @Param("cidade") String cidade,
                         @Param("dataInicioDia") LocalDateTime dataInicioDia,
                         @Param("dataFimDia") LocalDateTime dataFimDia,
                         Pageable pageable);

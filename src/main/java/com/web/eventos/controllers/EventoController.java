@@ -8,7 +8,6 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import com.web.eventos.entities.Categoria;
 import com.web.eventos.entities.Evento;
 import com.web.eventos.entities.EventoStatus;
-import com.web.eventos.entities.Local;
 import com.web.eventos.entities.Comentario;
 import com.web.eventos.entities.Organizacao;
 import com.web.eventos.security.CustomUserDetails;
@@ -81,25 +80,19 @@ public class EventoController {
     public String buscar(
             @RequestParam(required = false) String query,
             @RequestParam(required = false) Categoria categoria,
-            @RequestParam(required = false) Integer localId,
+            @RequestParam(required = false) String cidade,
             @RequestParam(required = false) LocalDate dataInicio,
             @RequestParam(defaultValue = "0") int page,
             @RequestParam(defaultValue = "12") int size,
             Model model) {
         Pageable pageable = PageRequest.of(page, size);
-        Page<Evento> eventosPage = eventoService.buscar(query, categoria, localId, dataInicio, pageable);
-        List<Local> locais = localService.findAll();
-        Local localSelecionado = locais.stream()
-                .filter(local -> local.getId().equals(localId))
-                .findFirst()
-                .orElse(null);
+        Page<Evento> eventosPage = eventoService.buscar(query, categoria, cidade, dataInicio, pageable);
 
         model.addAttribute("eventosPage", eventosPage);
-        model.addAttribute("locais", locais);
         model.addAttribute("categorias", Categoria.values());
         model.addAttribute("query", query);
         model.addAttribute("categoriaSelecionada", categoria != null ? categoria.getDisplayName() : null);
-        model.addAttribute("localSelecionado", localSelecionado != null ? localSelecionado.getNome() : null);
+        model.addAttribute("cidadeSelecionada", cidade);
         model.addAttribute("dataInicioSelecionada", dataInicio);
 
         return "eventos/busca";
