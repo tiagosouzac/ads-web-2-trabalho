@@ -1,0 +1,106 @@
+<footer th:fragment="footer" class="bg-neutral-50 py-16">
+  <div class="container flex justify-between">
+    <div class="space-y-3 max-w-sm">
+      <a th:href="@{/}" class="font-semibold inline-block">
+        <img
+          th:src="@{/logo.jpg}"
+          alt="Partiu! Descubra eventos incríveis na sua cidade"
+          width="110"
+          height="40"
+        />
+      </a>
+
+      <p class="text-sm text-neutral-500">
+        Descubra eventos incríveis na sua cidade! Fique por dentro das melhores
+        opções de entretenimento, cultura e lazer. Nunca mais perca um evento
+        importante!
+      </p>
+    </div>
+
+    <div class="flex gap-20">
+      <div class="space-y-3">
+        <strong class="font-semibold inline-block">Categorias</strong>
+
+        <div id="categories-list" class="space-y-1">
+          <th:block
+            th:each="cat, iterStat : ${categorias}"
+            th:if="${iterStat.index < 5}"
+          >
+            <div>
+              <a
+                class="text-sm flex items-center gap-2 hover:underline text-neutral-500"
+                th:href="@{/eventos/buscar(categoria=${cat})}"
+                th:text="${cat.displayName}"
+              ></a>
+            </div>
+          </th:block>
+
+          <div id="more-categories" style="display: none" class="space-y-1">
+            <th:block
+              th:each="cat, iterStat : ${categorias}"
+              th:if="${iterStat.index >= 5}"
+            >
+              <div>
+                <a
+                  class="text-sm flex items-center gap-2 hover:underline text-neutral-500"
+                  th:href="@{/eventos/buscar(categoria=${cat})}"
+                  th:text="${cat.displayName}"
+                ></a>
+              </div>
+            </th:block>
+          </div>
+
+          <button
+            th:if="${#lists.size(categorias) > 5}"
+            id="toggle-btn"
+            onclick="toggleCategories()"
+            class="text-sm text-neutral-500 font-medium underline mt-2 underline-offset-3"
+          >
+            Ver todas
+          </button>
+        </div>
+      </div>
+
+      <div class="space-y-3">
+        <strong class="font-semibold inline-block"> Sobre </strong>
+
+        <div class="space-y-1">
+          <a
+            th:href="@{/sobre}"
+            class="text-sm flex items-center gap-2 hover:underline text-neutral-500"
+          >
+            O que é o "Partiu!"?
+          </a>
+
+          <a
+            th:href="@{/termos-de-uso}"
+            class="text-sm flex items-center gap-2 hover:underline text-neutral-500"
+          >
+            Termos de Uso
+          </a>
+
+          <a
+            th:href="@{/politica-de-privacidade}"
+            class="text-sm flex items-center gap-2 hover:underline text-neutral-500"
+          >
+            Política de Privacidade
+          </a>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    function toggleCategories() {
+      const more = document.getElementById("more-categories");
+      const btn = document.getElementById("toggle-btn");
+      if (more.style.display === "none") {
+        more.style.display = "block";
+        btn.textContent = "Ver menos";
+      } else {
+        more.style.display = "none";
+        btn.textContent = "Ver todas";
+      }
+    }
+  </script>
+</footer>

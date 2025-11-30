@@ -1,6 +1,13 @@
 <header th:fragment="header" class="border-b py-2">
   <nav class="container flex justify-between items-center gap-8">
-    <a th:href="@{/}" class="font-semibold">Partiu!</a>
+    <a th:href="@{/}" class="font-semibold">
+      <img
+        th:src="@{/logo.jpg}"
+        alt="Partiu! Descubra eventos incríveis na sua cidade"
+        width="110"
+        height="40"
+      />
+    </a>
 
     <div class="flex-1 flex items-center gap-1.5">
       <form
