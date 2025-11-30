@@ -9,6 +9,7 @@ import com.web.eventos.entities.Categoria;
 import com.web.eventos.entities.Evento;
 import com.web.eventos.entities.EventoStatus;
 import com.web.eventos.entities.Local;
+import com.web.eventos.entities.Comentario;
 import com.web.eventos.entities.Organizacao;
 import com.web.eventos.security.CustomUserDetails;
 import com.web.eventos.services.AutenticacaoService;
@@ -17,6 +18,7 @@ import com.web.eventos.services.LocalService;
 import com.web.eventos.services.MidiaService;
 import com.web.eventos.services.OrganizacaoService;
 import com.web.eventos.services.InteressadoService;
+import com.web.eventos.services.ComentarioService;
 
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.validation.Valid;
@@ -48,16 +50,18 @@ public class EventoController {
     private final MidiaService midiaService;
     private final InteressadoService interessadoService;
     private final AutenticacaoService autenticacaoService;
+    private final ComentarioService comentarioService;
 
     public EventoController(EventoService eventoService, OrganizacaoService organizacaoService,
             LocalService localService, MidiaService midiaService, InteressadoService interessadoService,
-            AutenticacaoService autenticacaoService) {
+            AutenticacaoService autenticacaoService, ComentarioService comentarioService) {
         this.eventoService = eventoService;
         this.organizacaoService = organizacaoService;
         this.localService = localService;
         this.midiaService = midiaService;
         this.interessadoService = interessadoService;
         this.autenticacaoService = autenticacaoService;
+        this.comentarioService = comentarioService;
     }
 
     @InitBinder
@@ -102,7 +106,9 @@ public class EventoController {
     }
 
     @GetMapping("/{id}")
-    public String detalhes(@PathVariable Integer id, Model model, HttpServletRequest request) {
+    public String detalhes(@PathVariable Integer id,
+            @RequestParam(value = "page", required = false, defaultValue = "0") int page, Model model,
+            HttpServletRequest request) {
         request.getSession(true);
 
         Evento evento = eventoService.findById(id);
@@ -125,6 +131,22 @@ public class EventoController {
         } else {
             model.addAttribute("isInteressado", false);
         }
+
+        Integer usuarioId = (user != null && "USUARIO".equals(user.getTipo())) ? user.getId() : null;
+
+        int limit = 3;
+        if (page > 0) {
+            limit = 3 + page * 10;
+        }
+
+        List<Comentario> comentarios = comentarioService.getComentariosPriorizados(id, usuarioId, limit);
+
+        long totalComentarios = comentarioService.getTotalComentarios(id);
+
+        model.addAttribute("comentarios", comentarios);
+        model.addAttribute("totalComentarios", totalComentarios);
+        model.addAttribute("currentPage", page);
+        model.addAttribute("isUsuario", user != null && "USUARIO".equals(user.getTipo()));
 
         return "eventos/detalhes";
     }

@@ -345,6 +345,154 @@
           </div>
         </div>
       </section>
+
+      <section class="my-12 space-y-6">
+        <h2
+          class="text-2xl font-semibold"
+          th:text="${totalComentarios == 0 ? 'Nenhum comentário' : totalComentarios == 1 ? '1 comentário' : totalComentarios + ' comentários'}"
+        ></h2>
+
+        <ul
+          class="space-y-6 divide-y"
+          th:if="${comentarios != null and !comentarios.isEmpty()}"
+        >
+          <li
+            th:each="comentario : ${comentarios}"
+            class="flex items-start gap-3 not-last:pb-6"
+          >
+            <div class="flex items-start gap-2">
+              <img
+                th:if="${comentario.usuario.avatar != null}"
+                th:src="${comentario.usuario.avatar.url}"
+                th:alt="${comentario.usuario.nome}"
+                class="w-8 h-8 rounded-full object-cover border"
+              />
+              <div
+                th:if="${comentario.usuario.avatar == null}"
+                class="w-8 h-8 rounded-full bg-blue-500 text-white flex items-center justify-center text-sm font-medium"
+                th:text="${#strings.substring(comentario.usuario.nome, 0, 1).toUpperCase()}"
+              ></div>
+            </div>
+            <div class="w-full">
+              <div class="flex gap-3 w-full">
+                <p
+                  class="text-sm font-medium"
+                  th:text="${comentario.usuario.nome}"
+                ></p>
+                <p
+                  class="text-sm text-neutral-500"
+                  th:text="${#temporals.format(comentario.criadoEm, 'dd/MM/yyyy')} + ' às ' + ${#temporals.format(comentario.criadoEm, 'HH:mm')}"
+                ></p>
+
+                <form
+                  th:action="@{/comentarios/{id}/excluir(id=${comentario.id})}"
+                  method="post"
+                  class="ml-auto"
+                  sec:authorize="isAuthenticated()"
+                  th:if="${comentario.usuario.id == #authentication.principal.id}"
+                >
+                  <button
+                    class="size-5 flex justify-center items-center cursor-pointer"
+                  >
+                    <svg
+                      xmlns="http://www.w3.org/2000/svg"
+                      width="24"
+                      height="24"
+                      viewBox="0 0 24 24"
+                      fill="none"
+                      stroke="currentColor"
+                      stroke-width="2"
+                      stroke-linecap="round"
+                      stroke-linejoin="round"
+                      class="lucide lucide-trash2-icon lucide-trash-2 size-4 text-neutral-400 hover:text-red-500 transition-colors"
+                    >
+                      <path d="M10 11v6" />
+                      <path d="M14 11v6" />
+                      <path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6" />
+                      <path d="M3 6h18" />
+                      <path d="M8 6V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2" />
+                    </svg>
+                  </button>
+                </form>
+              </div>
+              <p th:text="${comentario.conteudo}"></p>
+            </div>
+          </li>
+        </ul>
+
+        <form
+          action=""
+          method="get"
+          class="flex justify-center"
+          th:if="${comentarios.size() < totalComentarios}"
+        >
+          <input type="hidden" name="page" th:value="${currentPage + 1}" />
+          <button class="text-sm text-neutral-500 flex items-center gap-2 py-4">
+            Carregar mais comentários
+            <svg
+              xmlns="http://www.w3.org/2000/svg"
+              width="24"
+              height="24"
+              viewBox="0 0 24 24"
+              fill="none"
+              stroke="currentColor"
+              stroke-width="2"
+              stroke-linecap="round"
+              stroke-linejoin="round"
+              class="lucide lucide-chevron-down-icon lucide-chevron-down text-neutral-500 size-4"
+            >
+              <path d="m6 9 6 6 6-6" />
+            </svg>
+          </button>
+        </form>
+
+        <form
+          th:action="@{/comentarios/salvar}"
+          method="post"
+          class="flex flex-col items-end gap-2.5 mt-12"
+          th:if="${isUsuario}"
+        >
+          <input type="hidden" name="eventoId" th:value="${evento.id}" />
+          <strong
+            class="w-full block font-semibold text-xl"
+            th:text="${totalComentarios == 0 ? 'Seja o primeiro a comentar' : 'Compartilhe sua opinião sobre o evento'}"
+          >
+          </strong>
+
+          <textarea
+            name="comentario"
+            id="comentario"
+            placeholder="Escreva seu comentário aqui..."
+            class="border rounded-lg block w-full px-4 py-2.5 resize-none"
+            rows="5"
+          ></textarea>
+
+          <button
+            class="w-48 px-6 py-2.5 bg-blue-500 text-white rounded-md flex justify-center items-center gap-1.5 font-medium hover:bg-blue-600 transition-colors"
+          >
+            Comentar
+          </button>
+        </form>
+
+        <div
+          class="flex flex-col gap-0.5 mt-12 border border-dashed py-4 px-6 rounded-lg"
+          sec:authorize="!isAuthenticated()"
+        >
+          <strong class="w-full block font-semibold text-xl">
+            Quer comentar sobre este evento?
+          </strong>
+
+          <p class="text-neutral-500">
+            <a
+              th:href="@{/entrar}"
+              class="text-blue-500 hover:underline font-medium"
+            >
+              Faça login
+            </a>
+            para compartilhar sua opinião!
+          </p>
+        </div>
+      </section>
     </main>
   </body>
 </html>
