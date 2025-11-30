@@ -41,6 +41,57 @@
         th:object="${organizacao}"
         enctype="multipart/form-data"
       >
+        <div class="flex flex-col gap-1.5">
+          <label for="avatar">Logo</label>
+
+          <label
+            for="avatar"
+            id="avatar-selector"
+            class="border border-dashed flex justify-center items-center size-32 rounded-full mx-auto"
+          >
+            <img
+              th:if="${organizacao.logo != null}"
+              th:src="${organizacao.logo.url}"
+              class="size-32 rounded-full object-cover"
+              alt="Logo atual"
+            />
+
+            <svg
+              th:unless="${organizacao.logo}"
+              xmlns="http://www.w3.org/2000/svg"
+              width="24"
+              height="24"
+              viewBox="0 0 24 24"
+              fill="none"
+              stroke="currentColor"
+              stroke-width="1.5"
+              stroke-linecap="round"
+              stroke-linejoin="round"
+              class="lucide lucide-building2-icon lucide-building-2 size-12 text-neutral-400"
+            >
+              <path d="M10 12h4" />
+              <path d="M10 8h4" />
+              <path d="M14 21v-3a2 2 0 0 0-4 0v3" />
+              <path
+                d="M6 10H4a2 2 0 0 0-2 2v7a2 2 0 0 0 2 2h16a2 2 0 0 0 2-2V9a2 2 0 0 0-2-2h-2"
+              />
+              <path d="M6 21V5a2 2 0 0 1 2-2h8a2 2 0 0 1 2 2v16" />
+            </svg>
+          </label>
+
+          <input
+            class="border px-3 py-1.5 rounded-md"
+            type="file"
+            id="avatar"
+            name="logo"
+            accept="image/jpeg,image/jpg,image/png,image/gif,image/webp"
+            hidden
+          />
+
+          <p class="text-xs text-neutral-500 mt-3">
+            Formatos aceitos: JPEG, PNG, GIF, WebP (máx. 10MB)
+          </p>
+        </div>
         <div class="flex flex-col gap-1">
           <label for="nome">
             Nome
@@ -193,22 +244,6 @@
           ></p>
         </div>
 
-        <div class="flex flex-col gap-1">
-          <label for="logo">Logo</label>
-
-          <input
-            class="border px-3 py-1.5 rounded-md"
-            type="file"
-            id="logo"
-            name="logo"
-            accept="image/jpeg,image/jpg,image/png,image/gif,image/webp"
-          />
-
-          <p class="text-xs text-neutral-500">
-            Formatos aceitos: JPEG, PNG, GIF, WebP (máx. 10MB)
-          </p>
-        </div>
-
         <button
           type="submit"
           class="h-10 bg-blue-500 px-4 py-1.5 rounded-md text-neutral-100 font-medium transition-colors hover:bg-blue-600 flex items-center justify-center"
@@ -243,5 +278,7 @@
     </main>
 
     <th:block th:replace="fragments/footer :: footer"></th:block>
+
+    <script th:src="@{/scripts/avatar-preview.js}"></script>
   </body>
 </html>

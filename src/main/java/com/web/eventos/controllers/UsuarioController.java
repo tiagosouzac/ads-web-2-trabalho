@@ -98,6 +98,7 @@ public class UsuarioController {
             Usuario usuarioAtualizado = usuarioService.atualizar(usuario, avatar);
             autenticacaoService.atualizarContextoAutenticacao(usuarioAtualizado.getEmail());
             model.addAttribute("mensagem", "Perfil atualizado com sucesso!");
+            model.addAttribute("usuario", usuarioAtualizado);
             return "usuarios/editar";
         } catch (IllegalArgumentException e) {
             if (e.getMessage().contains("E-mail")) {

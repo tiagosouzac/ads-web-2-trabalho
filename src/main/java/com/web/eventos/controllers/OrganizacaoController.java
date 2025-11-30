@@ -98,6 +98,7 @@ public class OrganizacaoController {
             Organizacao organizacaoAtualizada = organizacaoService.atualizar(organizacao, logo);
             autenticacaoService.atualizarContextoAutenticacao(organizacaoAtualizada.getEmail());
             model.addAttribute("mensagem", "Perfil atualizado com sucesso!");
+            model.addAttribute("organizacao", organizacaoAtualizada);
             return "organizacoes/editar";
         } catch (IllegalArgumentException e) {
             if (e.getMessage().contains("E-mail")) {

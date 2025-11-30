@@ -39,6 +39,45 @@
         th:object="${usuario}"
         enctype="multipart/form-data"
       >
+        <div class="flex flex-col gap-1.5">
+          <label for="avatar">Avatar</label>
+
+          <label
+            for="avatar"
+            id="avatar-selector"
+            class="border border-dashed flex justify-center items-center size-32 rounded-full mx-auto"
+          >
+            <svg
+              xmlns="http://www.w3.org/2000/svg"
+              width="24"
+              height="24"
+              viewBox="0 0 24 24"
+              fill="none"
+              stroke="currentColor"
+              stroke-width="1.5"
+              stroke-linecap="round"
+              stroke-linejoin="round"
+              class="lucide lucide-user-icon lucide-user size-12 text-neutral-400"
+            >
+              <path d="M19 21v-2a4 4 0 0 0-4-4H9a4 4 0 0 0-4 4v2" />
+              <circle cx="12" cy="7" r="4" />
+            </svg>
+          </label>
+
+          <input
+            class="border px-3 py-1.5 rounded-md"
+            type="file"
+            id="avatar"
+            name="avatar"
+            accept="image/jpeg,image/jpg,image/png,image/gif,image/webp"
+            hidden
+          />
+
+          <p class="text-xs text-neutral-500 mt-3">
+            Formatos aceitos: JPEG, PNG, GIF, WebP (máx. 10MB)
+          </p>
+        </div>
+
         <div class="flex flex-col gap-1">
           <label for="nome">
             Nome
@@ -130,22 +169,6 @@
           ></p>
         </div>
 
-        <div class="flex flex-col gap-1">
-          <label for="avatar"> Avatar </label>
-
-          <input
-            class="border px-3 py-1.5 rounded-md"
-            type="file"
-            id="avatar"
-            name="avatar"
-            accept="image/jpeg,image/jpg,image/png,image/gif,image/webp"
-          />
-
-          <p class="text-xs text-neutral-500">
-            Formatos aceitos: JPEG, PNG, GIF, WebP (máx. 10MB)
-          </p>
-        </div>
-
         <button
           type="submit"
           class="h-10 bg-blue-500 px-4 py-1.5 rounded-md text-neutral-100 font-medium transition-colors hover:bg-blue-600 flex items-center justify-center"
@@ -179,5 +202,7 @@
     </main>
 
     <th:block th:replace="fragments/footer :: footer"></th:block>
+
+    <script th:src="@{/scripts/avatar-preview.js}"></script>
   </body>
 </html>
