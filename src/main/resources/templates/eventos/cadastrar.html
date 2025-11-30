@@ -7,7 +7,7 @@
   <body>
     <th:block th:replace="fragments/header :: header"></th:block>
 
-    <main class="max-w-96 mx-auto space-y-6 py-12">
+    <main class="max-w-2xl mx-auto space-y-6 py-12">
       <hgroup class="space-y-3">
         <h1 class="text-center font-semibold text-2xl">Cadastrar evento</h1>
 
@@ -17,13 +17,13 @@
       </hgroup>
 
       <form
-        class="flex flex-col gap-4"
+        class="grid grid-cols-3 gap-4"
         th:action="@{/eventos/cadastrar}"
         method="POST"
         enctype="multipart/form-data"
         th:object="${evento}"
       >
-        <div class="flex flex-col gap-1">
+        <div class="col-span-3 flex flex-col gap-1">
           <label for="nome">
             Nome
             <span class="text-red-500">*</span>
@@ -46,7 +46,7 @@
           ></p>
         </div>
 
-        <div class="flex flex-col gap-1">
+        <div class="col-span-3 flex flex-col gap-1">
           <label for="descricao"> Descrição </label>
 
           <textarea
@@ -65,151 +65,7 @@
           ></p>
         </div>
 
-        <div class="flex flex-col gap-1">
-          <label for="categoria">
-            Categoria
-            <span class="text-red-500">*</span>
-          </label>
-
-          <select
-            class="border px-3 py-1.5 rounded-md"
-            id="categoria"
-            name="categoria"
-            required
-          >
-            <option value="">Selecione uma categoria</option>
-            <option
-              th:each="cat : ${categorias}"
-              th:value="${cat}"
-              th:text="${cat.displayName}"
-            ></option>
-          </select>
-
-          <p
-            th:if="${#fields.hasErrors('categoria')}"
-            th:errors="*{categoria}"
-            class="text-red-500 text-sm"
-          ></p>
-        </div>
-
-        <div class="flex flex-col gap-1">
-          <label for="local">
-            Local
-            <span class="text-red-500">*</span>
-          </label>
-
-          <select
-            class="border px-3 py-1.5 rounded-md"
-            id="local"
-            name="local"
-            required
-          >
-            <option value="">Selecione um local</option>
-            <option
-              th:each="loc : ${locais}"
-              th:value="${loc.id}"
-              th:text="${loc.nome}"
-            ></option>
-          </select>
-
-          <p
-            th:if="${#fields.hasErrors('local')}"
-            th:errors="*{local}"
-            class="text-red-500 text-sm"
-          ></p>
-        </div>
-
-        <div class="flex flex-col gap-1">
-          <label for="dataInicio">
-            Data de Início
-            <span class="text-red-500">*</span>
-          </label>
-
-          <input
-            class="border px-3 py-1.5 rounded-md"
-            type="datetime-local"
-            id="dataInicio"
-            name="dataInicio"
-            required
-            th:value="*{dataInicio != null ? #temporals.format(dataInicio, 'yyyy-MM-dd''T''HH:mm') : ''}"
-          />
-
-          <p
-            th:if="${#fields.hasErrors('dataInicio')}"
-            th:errors="*{dataInicio}"
-            class="text-red-500 text-sm"
-          ></p>
-        </div>
-
-        <div class="flex flex-col gap-1">
-          <label for="dataFim">
-            Data de Fim <span class="text-red-500">*</span>
-          </label>
-
-          <input
-            class="border px-3 py-1.5 rounded-md"
-            type="datetime-local"
-            id="dataFim"
-            name="dataFim"
-            required
-            th:value="*{dataFim != null ? #temporals.format(dataFim, 'yyyy-MM-dd''T''HH:mm') : ''}"
-          />
-
-          <p
-            th:if="${#fields.hasErrors('dataFim')}"
-            th:errors="*{dataFim}"
-            class="text-red-500 text-sm"
-          ></p>
-        </div>
-
-        <div class="flex flex-col gap-1">
-          <label for="preco">
-            Preço
-            <span class="text-red-500">*</span>
-          </label>
-
-          <input
-            class="border px-3 py-1.5 rounded-md"
-            type="number"
-            step="0.01"
-            id="preco"
-            name="preco"
-            placeholder="Digite o preço (ex: 50.00)"
-            required
-            th:value="*{preco}"
-          />
-
-          <p
-            th:if="${#fields.hasErrors('preco')}"
-            th:errors="*{preco}"
-            class="text-red-500 text-sm"
-          ></p>
-        </div>
-
-        <div class="flex flex-col gap-1">
-          <label for="idadeMinima"> Idade Mínima </label>
-
-          <select
-            class="border px-3 py-1.5 rounded-md"
-            id="idadeMinima"
-            name="idadeMinima"
-          >
-            <option value="">Livre</option>
-            <option value="12">12 anos</option>
-            <option value="14">14 anos</option>
-            <option value="16">16 anos</option>
-            <option value="18">18 anos</option>
-            <option value="21">21 anos</option>
-          </select>
-
-          <p
-            th:if="${#fields.hasErrors('idadeMinima')}"
-            th:errors="*{idadeMinima}"
-            class="text-red-500 text-sm"
-          ></p>
-        </div>
-
-        <div class="flex flex-col gap-1">
+        <div class="col-span-3 flex flex-col gap-1">
           <label for="midias"> Mídias (Imagens ou Vídeos) </label>
 
           <input
@@ -226,36 +82,186 @@
           </p>
         </div>
 
-        <div class="flex flex-col gap-1">
-          <label for="status">
-            Status
-            <span class="text-red-500">*</span>
-          </label>
+        <div class="col-span-3 grid grid-cols-2 gap-4">
+          <div class="flex flex-col gap-1">
+            <label for="categoria">
+              Categoria
+              <span class="text-red-500">*</span>
+            </label>
 
-          <select
-            class="border px-3 py-1.5 rounded-md"
-            id="status"
-            name="status"
-            required
-          >
-            <option value="">Selecione um status</option>
-            <option
-              th:each="st : ${statusList}"
-              th:value="${st}"
-              th:text="${st.displayName}"
-            ></option>
-          </select>
+            <select
+              class="border px-3 py-1.5 rounded-md"
+              id="categoria"
+              name="categoria"
+              required
+            >
+              <option value="">Selecione uma categoria</option>
+              <option
+                th:each="cat : ${categorias}"
+                th:value="${cat}"
+                th:text="${cat.displayName}"
+              ></option>
+            </select>
 
-          <p
-            th:if="${#fields.hasErrors('status')}"
-            th:errors="*{status}"
-            class="text-red-500 text-sm"
-          ></p>
+            <p
+              th:if="${#fields.hasErrors('categoria')}"
+              th:errors="*{categoria}"
+              class="text-red-500 text-sm"
+            ></p>
+          </div>
+
+          <div class="flex flex-col gap-1">
+            <label for="local">
+              Local
+              <span class="text-red-500">*</span>
+            </label>
+
+            <select
+              class="border px-3 py-1.5 rounded-md"
+              id="local"
+              name="local"
+              required
+            >
+              <option value="">Selecione um local</option>
+              <option
+                th:each="loc : ${locais}"
+                th:value="${loc.id}"
+                th:text="${loc.nome}"
+              ></option>
+            </select>
+
+            <p
+              th:if="${#fields.hasErrors('local')}"
+              th:errors="*{local}"
+              class="text-red-500 text-sm"
+            ></p>
+          </div>
+        </div>
+
+        <div class="col-span-3 grid grid-cols-2 gap-4">
+          <div class="flex flex-col gap-1">
+            <label for="dataInicio">
+              Data de Início
+              <span class="text-red-500">*</span>
+            </label>
+
+            <input
+              class="border px-3 py-1.5 rounded-md"
+              type="datetime-local"
+              id="dataInicio"
+              name="dataInicio"
+              required
+              th:value="*{dataInicio != null ? #temporals.format(dataInicio, 'yyyy-MM-dd''T''HH:mm') : ''}"
+            />
+
+            <p
+              th:if="${#fields.hasErrors('dataInicio')}"
+              th:errors="*{dataInicio}"
+              class="text-red-500 text-sm"
+            ></p>
+          </div>
+
+          <div class="flex flex-col gap-1">
+            <label for="dataFim">
+              Data de Fim <span class="text-red-500">*</span>
+            </label>
+
+            <input
+              class="border px-3 py-1.5 rounded-md"
+              type="datetime-local"
+              id="dataFim"
+              name="dataFim"
+              required
+              th:value="*{dataFim != null ? #temporals.format(dataFim, 'yyyy-MM-dd''T''HH:mm') : ''}"
+            />
+
+            <p
+              th:if="${#fields.hasErrors('dataFim')}"
+              th:errors="*{dataFim}"
+              class="text-red-500 text-sm"
+            ></p>
+          </div>
+        </div>
+
+        <div class="col-span-3 grid grid-cols-3 gap-4">
+          <div class="flex flex-col gap-1">
+            <label for="preco">
+              Preço
+              <span class="text-red-500">*</span>
+            </label>
+
+            <input
+              class="border px-3 py-1.5 rounded-md"
+              type="number"
+              step="0.01"
+              id="preco"
+              name="preco"
+              placeholder="Digite o preço (ex: 50.00)"
+              required
+              th:value="*{preco}"
+            />
+
+            <p
+              th:if="${#fields.hasErrors('preco')}"
+              th:errors="*{preco}"
+              class="text-red-500 text-sm"
+            ></p>
+          </div>
+
+          <div class="flex flex-col gap-1">
+            <label for="idadeMinima"> Idade Mínima </label>
+
+            <select
+              class="border px-3 py-1.5 rounded-md"
+              id="idadeMinima"
+              name="idadeMinima"
+            >
+              <option value="">Livre</option>
+              <option value="12">12 anos</option>
+              <option value="14">14 anos</option>
+              <option value="16">16 anos</option>
+              <option value="18">18 anos</option>
+              <option value="21">21 anos</option>
+            </select>
+
+            <p
+              th:if="${#fields.hasErrors('idadeMinima')}"
+              th:errors="*{idadeMinima}"
+              class="text-red-500 text-sm"
+            ></p>
+          </div>
+
+          <div class="flex flex-col gap-1">
+            <label for="status">
+              Status
+              <span class="text-red-500">*</span>
+            </label>
+
+            <select
+              class="border px-3 py-1.5 rounded-md"
+              id="status"
+              name="status"
+              required
+            >
+              <option value="">Selecione um status</option>
+              <option
+                th:each="st : ${statusList}"
+                th:value="${st}"
+                th:text="${st.displayName}"
+              ></option>
+            </select>
+
+            <p
+              th:if="${#fields.hasErrors('status')}"
+              th:errors="*{status}"
+              class="text-red-500 text-sm"
+            ></p>
+          </div>
         </div>
 
         <button
           type="submit"
-          class="h-10 bg-blue-500 px-4 py-1.5 rounded-md text-neutral-100 font-medium transition-colors hover:bg-blue-600 flex items-center justify-center"
+          class="col-start-3 col-end-4 h-10 bg-blue-500 px-4 py-1.5 rounded-md text-neutral-100 font-medium transition-colors hover:bg-blue-600 flex items-center justify-center"
         >
           Cadastrar
         </button>
