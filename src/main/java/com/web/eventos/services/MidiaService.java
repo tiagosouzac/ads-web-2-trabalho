@@ -27,7 +27,7 @@ public class MidiaService {
     @Value("${app.upload.dir:uploads}")
     private String uploadDir;
 
-    private static final long MAX_FILE_SIZE = 10 * 1024 * 1024; // 10MB
+    private static final long MAX_FILE_SIZE = 100 * 1024 * 1024; // 10MB
 
     private static final List<String> ALLOWED_IMAGE_TYPES = Arrays.asList(
             "image/jpeg", "image/jpg", "image/png", "image/gif", "image/webp");

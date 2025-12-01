@@ -16,48 +16,46 @@
           data-interval="5000"
           th:if="${evento.midias != null and !evento.midias.isEmpty()}"
         >
-          <div class="sticky top-8 h-max">
-            <div class="rounded-lg overflow-hidden" data-slides>
-              <img
-                th:each="midia : ${evento.midias}"
-                th:src="${midia.url}"
-                th:alt="${evento.nome}"
-                class="w-full h-full aspect-square object-cover rounded-lg"
-              />
-            </div>
+          <div class="rounded-lg" data-slides>
+            <img
+              th:each="midia : ${evento.midias}"
+              th:src="${midia.url}"
+              th:alt="${evento.nome}"
+              class="w-full h-full aspect-square object-cover rounded-lg"
+            />
+          </div>
 
-            <div class="buttons container" th:if="${evento.midias.size() > 1}">
-              <button data-prev-slide aria-label="Anterior">
-                <svg
-                  xmlns="http://www.w3.org/2000/svg"
-                  width="24"
-                  height="24"
-                  viewBox="0 0 24 24"
-                  fill="none"
-                  stroke="currentColor"
-                  stroke-width="2"
-                  stroke-linecap="round"
-                  stroke-linejoin="round"
-                >
-                  <polyline points="15 18 9 12 15 6"></polyline>
-                </svg>
-              </button>
-              <button data-next-slide aria-label="Próximo">
-                <svg
-                  xmlns="http://www.w3.org/2000/svg"
-                  width="24"
-                  height="24"
-                  viewBox="0 0 24 24"
-                  fill="none"
-                  stroke="currentColor"
-                  stroke-width="2"
-                  stroke-linecap="round"
-                  stroke-linejoin="round"
-                >
-                  <polyline points="9 18 15 12 9 6"></polyline>
-                </svg>
-              </button>
-            </div>
+          <div class="buttons container" th:if="${evento.midias.size() > 1}">
+            <button data-prev-slide aria-label="Anterior">
+              <svg
+                xmlns="http://www.w3.org/2000/svg"
+                width="24"
+                height="24"
+                viewBox="0 0 24 24"
+                fill="none"
+                stroke="currentColor"
+                stroke-width="2"
+                stroke-linecap="round"
+                stroke-linejoin="round"
+              >
+                <polyline points="15 18 9 12 15 6"></polyline>
+              </svg>
+            </button>
+            <button data-next-slide aria-label="Próximo">
+              <svg
+                xmlns="http://www.w3.org/2000/svg"
+                width="24"
+                height="24"
+                viewBox="0 0 24 24"
+                fill="none"
+                stroke="currentColor"
+                stroke-width="2"
+                stroke-linecap="round"
+                stroke-linejoin="round"
+              >
+                <polyline points="9 18 15 12 9 6"></polyline>
+              </svg>
+            </button>
           </div>
         </div>
 
@@ -565,14 +563,14 @@
 
       <section
         th:if="${eventosRecomendados != null and !eventosRecomendados.isEmpty()}"
-        class="space-y-6 my-12 container"
+        class="space-y-6 my-12"
       >
         <h2
           th:text="'Você também pode gostar desses eventos de ' + ${evento.categoria.displayName}"
           class="text-2xl font-semibold"
         ></h2>
 
-        <div class="grid grid-cols-[repeat(auto-fill,minmax(20rem,1fr))] gap-4">
+        <div class="grid grid-cols-[repeat(auto-fill,minmax(18rem,1fr))] gap-4">
           <th:block th:each="evento : ${eventosRecomendados}">
             <th:block
               th:replace="fragments/card :: card(evento=${evento}, interessadosCount=${interessadosCountMap[evento.id]})"

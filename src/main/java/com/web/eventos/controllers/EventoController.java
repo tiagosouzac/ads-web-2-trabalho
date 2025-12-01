@@ -98,7 +98,8 @@ public class EventoController {
             @RequestParam(defaultValue = "12") int size,
             Model model) {
         Pageable pageable = PageRequest.of(page, size);
-        Page<Evento> eventosPage = eventoService.buscar(query, categoria, cidade, dataInicio, pageable);
+        Page<Evento> eventosPage = eventoService.buscar(query, categoria,
+                cidade != null && !cidade.isEmpty() ? cidade : null, dataInicio, pageable);
 
         // Mapear cada evento com seu respectivo interessadosCount
         Map<Integer, Long> interessadosCountMap = new java.util.HashMap<>();
@@ -112,7 +113,7 @@ public class EventoController {
         model.addAttribute("categorias", Categoria.values());
         model.addAttribute("query", query);
         model.addAttribute("categoriaSelecionada", categoria != null ? categoria.getDisplayName() : null);
-        model.addAttribute("cidadeSelecionada", cidade);
+        model.addAttribute("cidadeSelecionada", cidade != null && !cidade.isEmpty() ? cidade : null);
         model.addAttribute("dataInicioSelecionada", dataInicio);
 
         return "eventos/busca";

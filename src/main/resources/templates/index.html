@@ -19,7 +19,7 @@
             th:each="banner : ${banners}"
             th:src="${banner.url}"
             th:alt="${banner.titulo}"
-            class="w-full h-120 aspect-video object-cover"
+            class="w-full h-160 aspect-video object-cover"
           />
         </div>
 
@@ -68,15 +68,15 @@
           ></h2>
 
           <a
-            th:if="${#lists.size(categoria.value) > 4}"
-            th:href="@{'/eventos/categoria/' + ${categoria.key.name()}}"
+            th:if="${#lists.size(categoria.value) == 4}"
+            th:href="@{/eventos/buscar(categoria=${categoria.key.name()})}"
             class="text-sm text-neutral-500"
           >
             Ver todos
           </a>
         </div>
 
-        <div class="grid grid-cols-[repeat(auto-fill,minmax(20rem,1fr))] gap-4">
+        <div class="grid grid-cols-[repeat(auto-fill,minmax(18rem,1fr))] gap-4">
           <th:block th:each="evento : ${categoria.value}">
             <th:block
               th:replace="fragments/card :: card(evento=${evento}, interessadosCount=${interessadosCountMap[evento.id]})"
