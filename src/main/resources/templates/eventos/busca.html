@@ -26,7 +26,7 @@
         <div class="grid grid-cols-[repeat(auto-fill,minmax(20rem,1fr))] gap-4">
           <th:block th:each="evento : ${eventosPage.content}">
             <th:block
-              th:replace="fragments/card :: card(evento=${evento})"
+              th:replace="fragments/card :: card(evento=${evento}, interessadosCount=${interessadosCountMap[evento.id]})"
             ></th:block>
           </th:block>
         </div>

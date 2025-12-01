@@ -24,6 +24,8 @@ import jakarta.validation.Valid;
 
 import java.time.LocalDate;
 import java.util.List;
+import java.util.Map;
+import java.util.HashMap;
 
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
@@ -72,7 +74,17 @@ public class EventoController {
     @PreAuthorize("isAuthenticated() and principal.tipo == 'ORGANIZACAO'")
     public String listar(@AuthenticationPrincipal CustomUserDetails organizacaoLogada, Model model) {
         Organizacao organizacao = organizacaoService.findById(organizacaoLogada.getId());
-        model.addAttribute("eventos", eventoService.findByOrganizacao(organizacao));
+        var eventos = eventoService.findByOrganizacao(organizacao);
+
+        // Calcular interessadosCount para cada evento
+        Map<Integer, Long> interessadosCountMap = new HashMap<>();
+        for (var evento : eventos) {
+            Long count = interessadoService.countInteressadosByEventoId(evento.getId());
+            interessadosCountMap.put(evento.getId(), count);
+        }
+
+        model.addAttribute("eventos", eventos);
+        model.addAttribute("interessadosCountMap", interessadosCountMap);
         return "eventos/listar";
     }
 
@@ -88,7 +100,15 @@ public class EventoController {
         Pageable pageable = PageRequest.of(page, size);
         Page<Evento> eventosPage = eventoService.buscar(query, categoria, cidade, dataInicio, pageable);
 
+        // Mapear cada evento com seu respectivo interessadosCount
+        Map<Integer, Long> interessadosCountMap = new java.util.HashMap<>();
+        for (Evento evento : eventosPage.getContent()) {
+            Long count = interessadoService.countInteressadosByEventoId(evento.getId());
+            interessadosCountMap.put(evento.getId(), count);
+        }
+
         model.addAttribute("eventosPage", eventosPage);
+        model.addAttribute("interessadosCountMap", interessadosCountMap);
         model.addAttribute("categorias", Categoria.values());
         model.addAttribute("query", query);
         model.addAttribute("categoriaSelecionada", categoria != null ? categoria.getDisplayName() : null);
