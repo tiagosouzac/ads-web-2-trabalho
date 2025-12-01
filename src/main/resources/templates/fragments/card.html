@@ -1,7 +1,7 @@
 <a
   th:fragment="card(evento, interessadosCount)"
   th:href="@{'/eventos/' + ${evento.id}}"
-  class="group/card border rounded-lg overflow-hidden hover:shadow-lg transition-shadow duration-300"
+  class="group/card bg-white border border-neutral-200 rounded-lg overflow-hidden hover:shadow-md transition-all duration-300"
 >
   <div class="relative">
     <img
@@ -25,14 +25,14 @@
 
       <div
         th:if="${evento.idadeMinima != null}"
-        class="bg-gray-600 text-white px-2 py-1 rounded-full text-xs font-medium"
+        class="bg-neutral-600 text-white px-2 py-1 rounded-full text-xs font-medium"
       >
         <span th:text="${evento.idadeMinima} + '+'"></span>
       </div>
 
       <div
         th:if="${evento.idadeMinima == null}"
-        class="bg-gray-600 text-white px-2 py-1 rounded-full text-xs font-medium"
+        class="bg-neutral-600 text-white px-2 py-1 rounded-full text-xs font-medium"
       >
         Livre
       </div>
@@ -63,7 +63,7 @@
   </div>
 
   <div
-    class="px-4 py-4 border-t rounded-b-lg group-hover/card:border-neutral-300 transition-colors duration-300 flex flex-col space-y-3"
+    class="px-4 py-4 border-t border-neutral-200 group-hover/card:border-neutral-200 transition-colors duration-300 flex flex-col space-y-3"
   >
     <strong th:text="${evento.nome}" class="text-lg leading-6 mb-1.5"></strong>
 

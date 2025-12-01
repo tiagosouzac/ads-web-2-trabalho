@@ -39,15 +39,21 @@
   height: 3rem;
   border: 0;
   border-radius: 3rem;
-  opacity: 0.5;
+  opacity: 0.8;
   background: #ffffff;
   line-height: 0;
-  transition: opacity 0.3s;
+  transition: all 0.2s ease-in-out;
   pointer-events: all;
   cursor: pointer;
   display: flex;
   align-items: center;
   justify-content: center;
+  box-shadow: 0 4px 6px -1px rgb(0 0 0 / 0.1), 0 2px 4px -2px rgb(0 0 0 / 0.1);
+}
+
+[data-slider] .buttons button:hover {
+  opacity: 1;
+  transform: scale(1.05);
 }
 
 [data-slider] .buttons button:focus {

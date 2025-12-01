@@ -1,4 +1,7 @@
-<header th:fragment="header" class="border-b py-2">
+<header
+  th:fragment="header"
+  class="sticky top-0 z-50 backdrop-blur-md bg-white/80 border-b border-neutral-200 py-2"
+>
   <nav class="container flex justify-between items-center gap-8">
     <a th:href="@{/}" class="font-semibold">
       <img
@@ -51,7 +54,7 @@
 
       <div class="relative group/categorias">
         <button
-          class="h-9 px-3 text-sm rounded-md border bg-white focus:outline-none focus:ring-2 focus:ring-blue-600 flex items-center gap-2 min-w-32 justify-between hover:bg-gray-50"
+          class="h-9 px-3 text-sm rounded-md border bg-white focus:outline-none focus:ring-2 focus:ring-blue-600 flex items-center gap-2 min-w-32 justify-between hover:bg-neutral-50"
         >
           <span
             th:text="${categoriaSelecionada != null ? categoriaSelecionada : 'Categorias'}"
@@ -65,7 +68,7 @@
             viewBox="0 0 24 24"
             stroke-width="2"
             stroke="currentColor"
-            class="size-4 transition-transform text-gray-400 group-focus-within/categorias:rotate-180"
+            class="size-4 transition-transform text-neutral-400 group-focus-within/categorias:rotate-180"
           >
             <path
               stroke-linecap="round"

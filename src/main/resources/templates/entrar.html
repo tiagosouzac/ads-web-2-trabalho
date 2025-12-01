@@ -10,7 +10,7 @@
     <main class="max-w-96 mx-auto space-y-6 py-12">
       <div
         th:if="${param.erro}"
-        class="bg-red-50 border border-red-500 text-red-700 px-4 py-3 rounded-md text-sm mb-10"
+        class="bg-red-50 border border-red-200 text-red-700 px-4 py-3 rounded-md text-sm mb-10"
         role="alert"
       >
         <p>E-mail ou senha incorretos. Tente novamente.</p>
@@ -18,7 +18,7 @@
 
       <div
         th:if="${mensagem}"
-        class="bg-green-50 border border-green-500 text-green-700 px-4 py-3 rounded-md text-sm mb-10"
+        class="bg-green-50 border border-green-200 text-green-700 px-4 py-3 rounded-md text-sm mb-10"
         role="alert"
       >
         <p th:text="${mensagem}"></p>
@@ -26,7 +26,7 @@
 
       <div
         th:if="${param.logout}"
-        class="bg-blue-50 border border-blue-500 text-blue-700 px-4 py-3 rounded-md text-sm mb-10"
+        class="bg-blue-50 border border-blue-200 text-blue-700 px-4 py-3 rounded-md text-sm mb-10"
         role="alert"
       >
         <p>Você saiu da sua conta com sucesso.</p>
