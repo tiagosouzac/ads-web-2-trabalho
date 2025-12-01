@@ -161,6 +161,20 @@ public class EventoController {
         model.addAttribute("currentPage", page);
         model.addAttribute("isUsuario", user != null && "USUARIO".equals(user.getTipo()));
 
+        // Buscar eventos recomendados na mesma categoria, excluindo o atual
+        List<Evento> eventosRecomendados = eventoService.findByCategoriaExcluding(evento.getCategoria(), evento.getId(),
+                4);
+
+        // Calcular interessadosCount para os recomendados
+        Map<Integer, Long> interessadosCountMap = new HashMap<>();
+        for (Evento rec : eventosRecomendados) {
+            Long count = interessadoService.countInteressadosByEventoId(rec.getId());
+            interessadosCountMap.put(rec.getId(), count);
+        }
+
+        model.addAttribute("eventosRecomendados", eventosRecomendados);
+        model.addAttribute("interessadosCountMap", interessadosCountMap);
+
         return "eventos/detalhes";
     }
 

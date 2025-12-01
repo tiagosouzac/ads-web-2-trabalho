@@ -93,4 +93,11 @@ public class EventoService {
 
         return map;
     }
+
+    public List<Evento> findByCategoriaExcluding(Categoria categoria, Integer excludeId, int limit) {
+        return eventoRepository.findByCategoriaAndStatusAndIdNot(categoria, EventoStatus.PUBLICADO, excludeId)
+                .stream()
+                .limit(limit)
+                .toList();
+    }
 }

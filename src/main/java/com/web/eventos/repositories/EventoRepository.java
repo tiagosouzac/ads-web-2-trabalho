@@ -25,6 +25,8 @@ public interface EventoRepository extends JpaRepository<Evento, Integer> {
 
         List<Evento> findByOrganizacao(Organizacao organizacao);
 
+        List<Evento> findByCategoriaAndStatusAndIdNot(Categoria categoria, EventoStatus status, Integer id);
+
         @Query("SELECT DISTINCT e FROM Evento e LEFT JOIN FETCH e.midias WHERE e.status = 'PUBLICADO' " +
                         "AND (COALESCE(:query, '') = '' OR LOWER(e.nome) LIKE LOWER(CONCAT('%', :query, '%')) OR LOWER(COALESCE(e.descricao, '')) LIKE LOWER(CONCAT('%', :query, '%'))) "
                         +

@@ -495,6 +495,24 @@
           </p>
         </div>
       </section>
+
+      <section
+        th:if="${eventosRecomendados != null and !eventosRecomendados.isEmpty()}"
+        class="space-y-6 my-12 container"
+      >
+        <h2
+          th:text="'Você também pode gostar desses eventos de ' + ${evento.categoria.displayName}"
+          class="text-2xl font-semibold"
+        ></h2>
+
+        <div class="grid grid-cols-[repeat(auto-fill,minmax(20rem,1fr))] gap-4">
+          <th:block th:each="evento : ${eventosRecomendados}">
+            <th:block
+              th:replace="fragments/card :: card(evento=${evento}, interessadosCount=${interessadosCountMap[evento.id]})"
+            ></th:block>
+          </th:block>
+        </div>
+      </section>
     </main>
 
     <th:block th:replace="fragments/footer :: footer"></th:block>
