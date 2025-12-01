@@ -266,6 +266,73 @@
                   </p>
                 </div>
 
+                <div class="flex gap-3">
+                  <a
+                    th:href="'https://api.whatsapp.com/send?text=' + 'http://localhost:8080/eventos/' + ${evento.id}"
+                    target="_blank"
+                    class="size-8 text-white rounded-lg flex justify-center items-center"
+                    aria-label="Compartilhar no WhatsApp"
+                  >
+                    <img
+                      th:src="@{/images/whatsapp.png}"
+                      alt="Compartilhar no WhatsApp"
+                      class="size-8"
+                    />
+                  </a>
+
+                  <a
+                    th:href="'https://www.facebook.com/sharer/sharer.php?u=' + 'http://localhost:8080/eventos/' + ${evento.id}"
+                    target="_blank"
+                    class="size-8 text-white rounded-lg flex justify-center items-center"
+                    aria-label="Compartilhar no Facebook"
+                  >
+                    <img
+                      th:src="@{/images/facebook.png}"
+                      alt="Compartilhar no Facebook"
+                      class="size-8 rounded-full"
+                    />
+                  </a>
+
+                  <a
+                    th:href="'https://twitter.com/intent/tweet?url=' + 'http://localhost:8080/eventos/' + ${evento.id} + '&text=' + ${evento.nome}"
+                    target="_blank"
+                    class="size-8 text-white rounded-lg flex justify-center items-center"
+                    aria-label="Compartilhar no Twitter"
+                  >
+                    <img
+                      th:src="@{/images/twitter.png}"
+                      alt="Compartilhar no Twitter"
+                      class="size-8 rounded-full"
+                    />
+                  </a>
+
+                  <a
+                    th:href="'https://www.linkedin.com/sharing/share-offsite/?url=' + 'http://localhost:8080/eventos/' + ${evento.id}"
+                    target="_blank"
+                    class="size-8 text-white rounded-lg flex justify-center items-center"
+                    aria-label="Compartilhar no LinkedIn"
+                  >
+                    <img
+                      th:src="@{/images/linkedin.png}"
+                      alt="Compartilhar no LinkedIn"
+                      class="size-8 rounded-full"
+                    />
+                  </a>
+
+                  <a
+                    th:href="'mailto:?subject=' + ${evento.nome} + '&body=' + 'Confira este evento: http://localhost:8080/eventos/' + ${evento.id}"
+                    target="_blank"
+                    class="size-8 text-white rounded-lg flex justify-center items-center"
+                    aria-label="Compartilhar por Email"
+                  >
+                    <img
+                      th:src="@{/images/email.png}"
+                      alt="Compartilhar por Email"
+                      class="size-8 rounded-full"
+                    />
+                  </a>
+                </div>
+
                 <div
                   class="flex justify-between items-center gap-2.5 border px-3 py-1.5 rounded-lg"
                 >
