@@ -211,7 +211,8 @@ public class EventoController {
     @PreAuthorize("isAuthenticated() and principal.tipo == 'ORGANIZACAO'")
     public String atualizar(@AuthenticationPrincipal CustomUserDetails organizacaoLogada, @PathVariable Integer id,
             @ModelAttribute @Valid Evento evento, BindingResult result, RedirectAttributes redirectAttributes,
-            Model model, @RequestParam(value = "midias", required = false) MultipartFile[] midias) {
+            Model model, @RequestParam(value = "midias", required = false) MultipartFile[] midias,
+            @RequestParam(value = "midiasParaExcluir", required = false) String midiasParaExcluirStr) {
         if (result.hasErrors()) {
             return "eventos/editar";
         }
@@ -226,7 +227,20 @@ public class EventoController {
             evento.setId(id);
             Evento eventoAtualizado = eventoService.atualizar(evento);
 
-            // Processar mídias se houver
+            // Processar exclusão de mídias se houver
+            if (midiasParaExcluirStr != null && !midiasParaExcluirStr.isEmpty()) {
+                String[] idsStr = midiasParaExcluirStr.split(",");
+                for (String idStr : idsStr) {
+                    try {
+                        Integer midiaId = Integer.parseInt(idStr.trim());
+                        midiaService.removerMidia(midiaId);
+                    } catch (NumberFormatException e) {
+                        // Ignorar IDs inválidos
+                    }
+                }
+            }
+
+            // Processar upload de novas mídias se houver
             if (midias != null && midias.length > 0) {
                 for (MultipartFile midia : midias) {
                     if (!midia.isEmpty()) {
