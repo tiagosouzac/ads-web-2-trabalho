@@ -1,6 +1,5 @@
 package com.web.eventos.controllers;
 
-import org.springframework.cache.annotation.Cacheable;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ModelAttribute;
 
@@ -22,14 +21,12 @@ public class GlobalControllerAdvice {
     }
 
     @ModelAttribute("categorias")
-    @Cacheable("categorias")
     public List<Categoria> obterCategorias(HttpServletRequest request) {
         request.getSession(true);
         return Arrays.asList(Categoria.values());
     }
 
     @ModelAttribute("cidades")
-    @Cacheable("cidades")
     public List<String> obterCidades(HttpServletRequest request) {
         request.getSession(true);
         return localService.findDistinctCidade();
